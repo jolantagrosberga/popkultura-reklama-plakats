@@ -201,6 +201,17 @@
     line-height:1;
   }
   .dbox.sel .del-btn{display:flex}
+  /* drag handle — always visible strip above text */
+  .dbox .drag-handle{
+    display:block;
+    width:100%;height:10px;
+    background:rgba(255,214,0,.55);
+    border-radius:3px 3px 0 0;
+    cursor:move;
+    pointer-events:auto;
+    margin-bottom:1px;
+  }
+  .dbox.sel .drag-handle{background:var(--yellow);}
   .dbox .dbox-label{
     display:block;
     pointer-events:none;
@@ -736,6 +747,11 @@ function addTextBox(clickEvent) {
   db.addEventListener("mousedown", e => { e.stopPropagation(); box.remove(); selectedBox = null; });
   db.addEventListener("touchstart", e => { e.stopPropagation(); box.remove(); selectedBox = null; }, {passive:true});
 
+  const dh = document.createElement("span");
+  dh.className = "drag-handle";
+  dh.title = "Velc šeit";
+
+  box.appendChild(dh);
   box.appendChild(ta);
   box.appendChild(rh);
   box.appendChild(db);
@@ -754,9 +770,10 @@ function finaliseBox(box, ta, text) {
   span.textContent = text;
   box.replaceChild(span, ta);
 
-  // NOW make box interactive for dragging
+  // Ensure drag-handle exists (it was added in addTextBox)
+  // NOW make box interactive
   box.style.pointerEvents = "auto";
-  box.style.cursor = "move";
+  box.style.cursor = "default";
 
   // Double-click to re-edit
   box.addEventListener("dblclick", e => {
@@ -809,55 +826,40 @@ function deselectAll() {
 }
 
 function makeDraggable(box) {
-  let sx, sy, sl, st, dragging = false;
+  // Drag only from the .drag-handle element — reliable, no conflicts with textarea/span
+  const handle = box.querySelector(".drag-handle");
+  if (!handle) return;
 
-  function startDrag(cx, cy) {
-    dragging = true;
-    sx = cx; sy = cy;
-    sl = parseInt(box.style.left) || 0;
-    st = parseInt(box.style.top)  || 0;
+  function attachDrag(getX, getY, downEvent, moveEvent, upEvent, opts) {
+    handle.addEventListener(downEvent, e => {
+      e.preventDefault();
+      e.stopPropagation();
+      selectBox(box);
+      let sx = getX(e), sy = getY(e);
+      let sl = parseInt(box.style.left) || 0;
+      let st = parseInt(box.style.top)  || 0;
+      const mv = m => {
+        box.style.left = (sl + getX(m) - sx) + "px";
+        box.style.top  = (st + getY(m) - sy) + "px";
+      };
+      const up = () => {
+        document.removeEventListener(moveEvent, mv);
+        document.removeEventListener(upEvent, up);
+      };
+      document.addEventListener(moveEvent, mv);
+      document.addEventListener(upEvent, up);
+    }, opts || {});
   }
 
-  box.addEventListener("mousedown", e => {
-    if (e.target.tagName === "TEXTAREA" || e.target.classList.contains("rh")) return;
-    e.preventDefault();
-    e.stopPropagation(); // prevent canvas onDown from firing
-    selectBox(box);
-    startDrag(e.clientX, e.clientY);
-    const mv = m => {
-      if (!dragging) return;
-      box.style.left = (sl + m.clientX - sx) + "px";
-      box.style.top  = (st + m.clientY - sy) + "px";
-    };
-    const up = () => {
-      dragging = false;
-      document.removeEventListener("mousemove", mv);
-      document.removeEventListener("mouseup", up);
-    };
-    document.addEventListener("mousemove", mv);
-    document.addEventListener("mouseup", up);
-  });
-
-  box.addEventListener("touchstart", e => {
-    if (e.target.tagName === "TEXTAREA" || e.target.classList.contains("rh")) return;
-    e.stopPropagation();
-    selectBox(box);
-    const t = e.touches[0];
-    startDrag(t.clientX, t.clientY);
-    const mv = m => {
-      m.preventDefault();
-      const tt = m.touches[0];
-      box.style.left = (sl + tt.clientX - sx) + "px";
-      box.style.top  = (st + tt.clientY - sy) + "px";
-    };
-    const up = () => {
-      dragging = false;
-      document.removeEventListener("touchmove", mv);
-      document.removeEventListener("touchend", up);
-    };
-    document.addEventListener("touchmove", mv, {passive:false});
-    document.addEventListener("touchend", up);
-  }, {passive:true});
+  attachDrag(
+    e => e.clientX, e => e.clientY,
+    "mousedown", "mousemove", "mouseup"
+  );
+  attachDrag(
+    e => e.touches[0].clientX, e => e.touches[0].clientY,
+    "touchstart", "touchmove", "touchend",
+    {passive: false}
+  );
 }
 
 function makeResizable(box, rh) {
