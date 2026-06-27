@@ -176,75 +176,36 @@
   #posterCanvas{display:block;width:100%;aspect-ratio:3/4;border-radius:.9rem;border:2px solid rgba(255,255,255,.3);background:#fff;touch-action:none;cursor:crosshair;position:relative;z-index:1}
 
   /* TEXT OVERLAY LAYER */
-  #textLayer{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;border-radius:.9rem;overflow:visible;z-index:5}
 
-  /* Draggable text box */
-  .dbox{
-    position:absolute;
-    cursor:move;
-    user-select:none;
-    padding:3px 5px;
-    min-width:40px;
-    line-height:1.2;
-    font-weight:bold;
-    white-space:nowrap;
-    pointer-events:auto;
-  }
-  .dbox.sel{outline:2px dashed var(--yellow);outline-offset:3px}
-  .dbox .del-btn{
-    position:absolute;top:-10px;right:-10px;
-    width:20px;height:20px;border-radius:50%;
-    background:var(--pink);border:2px solid #fff;
-    color:#fff;font-size:.7rem;font-weight:700;
-    display:none;align-items:center;justify-content:center;
-    cursor:pointer;z-index:30;pointer-events:auto;
-    line-height:1;
-  }
-  .dbox.sel .del-btn{display:flex}
-  /* drag handle — always visible strip above text */
-  .dbox .drag-handle{
-    display:block;
-    width:100%;height:10px;
-    background:rgba(255,214,0,.55);
-    border-radius:3px 3px 0 0;
-    cursor:move;
-    pointer-events:auto;
-    margin-bottom:1px;
-  }
-  .dbox.sel .drag-handle{background:var(--yellow);}
-  .dbox .dbox-label{
-    display:block;
-    pointer-events:none;
-    white-space:nowrap;
-    line-height:inherit;
-  }
-  .dbox textarea{
-    background:rgba(255,255,255,.15);
-    border:1px dashed rgba(255,255,255,.5);
-    border-radius:3px;
-    outline:none;
-    font-family:inherit;font-size:inherit;color:inherit;
-    font-weight:inherit;line-height:inherit;
-    resize:none;padding:2px 4px;margin:0;
-    min-width:60px;overflow:hidden;
-    white-space:nowrap;display:block;
-    pointer-events:auto;
-    cursor:text;
-    width:100px;
-  }
-  .dbox .rh{
-    position:absolute;width:14px;height:14px;
-    background:var(--yellow);border:2px solid #fff;
-    border-radius:3px;bottom:-7px;right:-7px;
-    cursor:se-resize;display:none;z-index:10;
-    pointer-events:auto;
-  }
-  .dbox.sel .rh{display:block}
+
 
   .poster-actions{display:flex;gap:.55rem;margin-top:.7rem;flex-wrap:wrap}
   .p-btn{padding:.4rem .95rem;border-radius:99px;border:1.5px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);color:#fff;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .14s;font-family:'Inter',sans-serif}
   .p-btn:hover{background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.6)}
   .hint-row{font-size:.72rem;color:rgba(255,255,255,.7);margin-top:.55rem;line-height:1.5}
+
+  /* ── Text widget overlay ── */
+  .tw{position:absolute;touch-action:none;cursor:default;}
+  .tw textarea{
+    display:block;background:transparent;border:none;outline:none;
+    font-family:inherit;font-size:inherit;font-weight:bold;color:inherit;
+    line-height:1.2;resize:none;padding:0;margin:0;
+    white-space:nowrap;overflow:hidden;min-width:60px;
+    cursor:text;pointer-events:auto;
+  }
+  /* border shown only when widget active */
+  .tw.active{outline:2px dashed rgba(255,214,0,.8);}
+  /* control buttons */
+  .tw-btn{
+    position:absolute;width:22px;height:22px;border-radius:50%;
+    border:2px solid #fff;display:flex;align-items:center;justify-content:center;
+    font-size:.75rem;font-weight:700;cursor:pointer;
+    pointer-events:auto;user-select:none;line-height:1;z-index:5;
+  }
+  .tw-move{background:#1a3a8a;color:#FFD600;top:-12px;left:50%;transform:translateX(-50%);cursor:move;}
+  .tw-del {background:#e53935;color:#fff;top:-12px;right:-12px;}
+  .tw-ok  {background:#2e7d32;color:#fff;bottom:-12px;left:-12px;}
+  .tw-rot {background:#7C4DFF;color:#fff;bottom:-12px;right:-12px;cursor:alias;}
 </style>
 </head>
 <body>
@@ -380,13 +341,13 @@
       </div>
       <div style="position:relative;display:inline-block;width:100%">
         <canvas id="posterCanvas"></canvas>
-        <div id="textLayer"></div>
+        <div id="twLayer" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10;border-radius:.9rem;overflow:visible;"></div>
       </div>
       <div class="poster-actions">
         <button class="p-btn" onclick="undoCanvas()">↩️ Atcelt</button>
         <button class="p-btn" onclick="clearCanvas()">🗑️ Notīrīt visu</button>
       </div>
-      <div class="hint-row">💡 Teksta rīks (T): noklikšķini uz plakāta → ieraksti → Enter. Velc tekstlodziņu. Dzeltenais stūris = mainīt izmēru.</div>
+      <div class="hint-row">💡 Teksts (T): noklikšķini → ieraksti → ✥ pārvieto · ↻ pagriež · ✓ apstiprina uz plakāta · ✕ dzēš lodziņu. Pēc apstiprināšanas — dzēšamgumija izdzēš.</div>
     </div>
   </div>
 </div>
@@ -565,7 +526,6 @@ function initCanvas() {
   canvas.width = w;
   canvas.height = Math.round(w * 4/3);
   ctx = canvas.getContext("2d");
-  document.getElementById("textLayer").innerHTML = "";
   selectedBox = null;
   history = []; hStep = -1;
 
@@ -595,6 +555,13 @@ function initCanvas() {
 
   saveH();
 
+  // Reset any active text widget
+  if (typeof activeWidget !== "undefined" && activeWidget) {
+    activeWidget.remove(); activeWidget = null;
+  }
+  const twl = document.getElementById("twLayer");
+  if (twl) { twl.innerHTML = ""; twl.style.pointerEvents = "none"; }
+
   canvas.style.cursor = "crosshair";
   canvas.onmousedown  = onDown;
   canvas.onmousemove  = onMove;
@@ -604,10 +571,6 @@ function initCanvas() {
   canvas.ontouchmove  = e => { e.preventDefault(); const t=e.touches[0]; onMove({clientX:t.clientX,clientY:t.clientY}); };
   canvas.ontouchend   = onUp;
 
-  // size text layer
-  const tl = document.getElementById("textLayer");
-  tl.style.width  = canvas.offsetWidth  + "px";
-  tl.style.height = canvas.offsetHeight + "px";
 }
 
 function getPos(e) {
@@ -617,7 +580,6 @@ function getPos(e) {
 
 function onDown(e) {
   if (tool === "text") { addTextBox(e); return; }
-  deselectAll();
   painting = true;
   const p = getPos(e);
   ctx.beginPath(); ctx.moveTo(p.x, p.y);
@@ -649,10 +611,11 @@ function saveH() {
 }
 function undoCanvas()  { if (hStep<=0) return; hStep--; ctx.putImageData(history[hStep],0,0); }
 function clearCanvas() {
+  if (activeWidget) { activeWidget.remove(); activeWidget = null; }
+  const tl = document.getElementById("twLayer");
+  if (tl) { tl.innerHTML = ""; tl.style.pointerEvents = "none"; }
   ctx.globalCompositeOperation = "source-over";
   ctx.fillStyle = "#fff"; ctx.fillRect(0,0,canvas.width,canvas.height);
-  document.getElementById("textLayer").innerHTML = "";
-  selectedBox = null;
   saveH();
 }
 
@@ -679,211 +642,201 @@ function setFont(el) {
   el.classList.add("active");
 }
 
-// ═══════ DRAGGABLE TEXT BOXES ═══════
-// Architecture:
-// - canvas always receives mouse events (pointer-events:auto, z-index low)
-// - textLayer always pointer-events:NONE — it never blocks canvas
-// - each finalised .dbox has pointer-events:auto and sits above canvas
-// - onDown checks tool: if 'text' → addTextBox; else → draw
-// - selecting/dragging a box works because dbox is above canvas and
-//   stopPropagation prevents canvas from also firing
+
+
+
+// ═══════ TEXT WIDGET SYSTEM ═══════
+// Each text widget is a DOM div inside #twLayer positioned over the canvas.
+// While active: move (✥), delete (×), rotate (⟳), confirm (✓).
+// On confirm: stamped onto canvas pixels, widget removed. Eraser works on stamp.
+
+let activeWidget = null;
+
+// Get twLayer position — used to convert clientX/Y to layer-relative px
+function twLayerRect() {
+  return document.getElementById("twLayer").getBoundingClientRect();
+}
 
 function addTextBox(clickEvent) {
-  const tl = document.getElementById("textLayer");
-  const cr  = canvas.getBoundingClientRect();
-  const fontSize   = Math.max(14, size * 7);
+  // Confirm any existing widget first
+  if (activeWidget) confirmWidget(activeWidget);
+
+  const lr = twLayerRect();
+  const cr = canvas.getBoundingClientRect();
+
+  // Position relative to twLayer
+  const x = clickEvent.clientX - lr.left;
+  const y = clickEvent.clientY - lr.top;
+
+  const fontSize   = Math.max(16, size * 7);
   const fontFamily = font + (font === "Pacifico" ? ",cursive" : ",sans-serif");
 
-  const xPx = clickEvent.clientX - cr.left;
-  const yPx = clickEvent.clientY - cr.top - fontSize / 2;
+  // ── Widget container ──
+  const w = document.createElement("div");
+  w.className = "tw active";
+  w.style.cssText = `left:${x}px;top:${y}px;position:absolute;pointer-events:auto;`+
+    `font-family:${fontFamily};font-size:${fontSize}px;color:${color};`+
+    `font-weight:bold;line-height:1.2;transform-origin:center center;`;
 
-  const box = document.createElement("div");
-  box.className = "dbox sel";
-  Object.assign(box.style, {
-    position:"absolute", left:xPx+"px", top:yPx+"px",
-    fontFamily, fontSize:fontSize+"px", color,
-    fontWeight:"bold", lineHeight:"1.2", whiteSpace:"nowrap",
-    cursor:"move", userSelect:"none",
-    pointerEvents:"none",   // inactive until finalised
-    zIndex:"20", padding:"2px 4px"
-  });
-
+  // ── Textarea ──
   const ta = document.createElement("textarea");
   ta.rows = 1;
-  ta.placeholder = "Ieraksti, tad Enter...";
-  Object.assign(ta.style, {
-    background:"rgba(255,255,255,.18)", border:"1.5px dashed rgba(255,255,255,.6)",
-    borderRadius:"3px", outline:"none",
-    fontFamily:"inherit", fontSize:"inherit", color:"inherit",
-    fontWeight:"inherit", lineHeight:"inherit",
-    resize:"none", padding:"2px 5px", margin:"0",
-    minWidth:"80px", overflow:"hidden", whiteSpace:"nowrap",
-    display:"block", width:"120px", cursor:"text",
-    pointerEvents:"auto"   // only textarea is interactive during edit
-  });
-
+  ta.placeholder = "Ieraksti...";
+  ta.style.cssText = `width:120px;background:transparent;border:none;outline:none;`+
+    `font-family:inherit;font-size:inherit;font-weight:bold;color:inherit;`+
+    `line-height:1.2;resize:none;padding:0;white-space:nowrap;overflow:hidden;`+
+    `display:block;cursor:text;pointer-events:auto;`;
   ta.addEventListener("input", () => {
-    ta.style.width = Math.max(80, ta.scrollWidth + 6) + "px";
+    ta.style.width = Math.max(60, ta.scrollWidth + 4) + "px";
   });
   ta.addEventListener("mousedown", e => e.stopPropagation());
   ta.addEventListener("touchstart", e => e.stopPropagation(), {passive:true});
-  ta.addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const txt = ta.value.trim();
-      if (!txt) { box.remove(); return; }
-      finaliseBox(box, ta, txt);
-    }
-    if (e.key === "Escape") { box.remove(); }
-  });
 
-  const rh = document.createElement("div");
-  rh.className = "rh";
-  makeResizable(box, rh);
+  // ── Buttons ──
+  function makeBtn(cls, html_content, onClick) {
+    const b = document.createElement("div");
+    b.className = "tw-btn " + cls;
+    b.innerHTML = html_content;
+    b.addEventListener("mousedown", e => { e.stopPropagation(); e.preventDefault(); onClick(); });
+    b.addEventListener("touchstart", e => { e.stopPropagation(); e.preventDefault(); onClick(); }, {passive:false});
+    return b;
+  }
 
-  const db = document.createElement("div");
-  db.className = "del-btn";
-  db.textContent = "×";
-  db.addEventListener("mousedown", e => { e.stopPropagation(); box.remove(); selectedBox = null; });
-  db.addEventListener("touchstart", e => { e.stopPropagation(); box.remove(); selectedBox = null; }, {passive:true});
+  const btnDel  = makeBtn("tw-btn tw-del",  "✕", () => { w.remove(); activeWidget = null; });
+  const btnOk   = makeBtn("tw-btn tw-ok",   "✓", () => confirmWidget(w));
+  const btnMove = makeBtn("tw-btn tw-move", "✥", () => {});
+  const btnRot  = makeBtn("tw-btn tw-rot",  "↻", () => {});
 
-  const dh = document.createElement("span");
-  dh.className = "drag-handle";
-  dh.title = "Velc šeit";
+  w.appendChild(ta);
+  w.appendChild(btnDel);
+  w.appendChild(btnOk);
+  w.appendChild(btnMove);
+  w.appendChild(btnRot);
 
-  box.appendChild(dh);
-  box.appendChild(ta);
-  box.appendChild(rh);
-  box.appendChild(db);
-  tl.appendChild(box);
+  // Store state on widget
+  w._angle = 0;
+  w._font  = fontFamily;
+  w._size  = fontSize;
+  w._color = color;
 
-  selectBox(box);
+  document.getElementById("twLayer").style.pointerEvents = "auto";
+  document.getElementById("twLayer").appendChild(w);
+  activeWidget = w;
+
+  attachMove(w, btnMove);
+  attachRotate(w, btnRot);
+
   setTimeout(() => ta.focus(), 10);
 }
 
-function finaliseBox(box, ta, text) {
-  // Swap textarea → static span
-  const span = document.createElement("span");
-  Object.assign(span.style, {
-    display:"block", whiteSpace:"nowrap", pointerEvents:"none"
-  });
-  span.textContent = text;
-  box.replaceChild(span, ta);
+function confirmWidget(w) {
+  const ta   = w.querySelector("textarea");
+  const text = ta ? ta.value.trim() : w._text || "";
+  if (!text) { w.remove(); activeWidget = null; return; }
 
-  // Ensure drag-handle exists (it was added in addTextBox)
-  // NOW make box interactive
-  box.style.pointerEvents = "auto";
-  box.style.cursor = "default";
+  // Get widget bounding rect relative to canvas display area
+  const cr = canvas.getBoundingClientRect();
+  const wr = w.getBoundingClientRect();
 
-  // Double-click to re-edit
-  box.addEventListener("dblclick", e => {
-    e.stopPropagation();
-    const ta2 = document.createElement("textarea");
-    ta2.rows = 1;
-    ta2.value = span.textContent;
-    Object.assign(ta2.style, {
-      background:"rgba(255,255,255,.18)", border:"1.5px dashed rgba(255,255,255,.6)",
-      borderRadius:"3px", outline:"none",
-      fontFamily:"inherit", fontSize:"inherit", color:"inherit",
-      fontWeight:"inherit", lineHeight:"inherit",
-      resize:"none", padding:"2px 5px", margin:"0",
-      minWidth:"80px", overflow:"hidden", whiteSpace:"nowrap",
-      display:"block", width:Math.max(80, span.offsetWidth+20)+"px",
-      cursor:"text", pointerEvents:"auto"
-    });
-    ta2.addEventListener("input", () => { ta2.style.width = Math.max(80, ta2.scrollWidth+6)+"px"; });
-    ta2.addEventListener("mousedown", e2 => e2.stopPropagation());
-    ta2.addEventListener("keydown", e2 => {
-      if (e2.key === "Enter") {
-        e2.preventDefault();
-        const t = ta2.value.trim();
-        if (!t) { box.remove(); return; }
-        span.textContent = t;
-        box.replaceChild(span, ta2);
-        box.style.pointerEvents = "auto";
-      }
-      if (e2.key === "Escape") { box.replaceChild(span, ta2); box.style.pointerEvents = "auto"; }
-    });
-    box.style.pointerEvents = "none"; // disable drag while editing
-    box.replaceChild(ta2, span);
-    setTimeout(() => ta2.focus(), 10);
-  });
+  // Scale factor: canvas pixels per CSS pixel
+  const scaleX = canvas.width  / cr.width;
+  const scaleY = canvas.height / cr.height;
 
-  makeDraggable(box);
-  selectBox(box);
+  // Center of widget in canvas pixels
+  const cx = (wr.left + wr.width  / 2 - cr.left) * scaleX;
+  const cy = (wr.top  + wr.height / 2 - cr.top)  * scaleY;
+
+  ctx.save();
+  ctx.globalCompositeOperation = "source-over";
+  ctx.font      = `bold ${w._size}px ${w._font}`;
+  ctx.fillStyle = w._color;
+  ctx.textAlign    = "center";
+  ctx.textBaseline = "middle";
+  ctx.translate(cx, cy);
+  ctx.rotate(w._angle);
+  ctx.fillText(text, 0, 0);
+  ctx.restore();
+
+  saveH();
+  w.remove();
+  activeWidget = null;
+  document.getElementById("twLayer").style.pointerEvents = "none";
 }
 
-function selectBox(box) {
-  if (selectedBox && selectedBox !== box) selectedBox.classList.remove("sel");
-  selectedBox = box;
-  box.classList.add("sel");
-}
+// ── Move: drag from btnMove ──
+function attachMove(w, btn) {
+  function startDrag(clientX, clientY) {
+    const startL = parseInt(w.style.left) || 0;
+    const startT = parseInt(w.style.top)  || 0;
+    const sx = clientX, sy = clientY;
 
-// Deselect when canvas is clicked (non-text tool or empty area)
-// This fires AFTER dbox mousedown because dbox is higher z-index
-function deselectAll() {
-  if (selectedBox) { selectedBox.classList.remove("sel"); selectedBox = null; }
-}
-
-function makeDraggable(box) {
-  // Drag only from the .drag-handle element — reliable, no conflicts with textarea/span
-  const handle = box.querySelector(".drag-handle");
-  if (!handle) return;
-
-  function attachDrag(getX, getY, downEvent, moveEvent, upEvent, opts) {
-    handle.addEventListener(downEvent, e => {
-      e.preventDefault();
-      e.stopPropagation();
-      selectBox(box);
-      let sx = getX(e), sy = getY(e);
-      let sl = parseInt(box.style.left) || 0;
-      let st = parseInt(box.style.top)  || 0;
-      const mv = m => {
-        box.style.left = (sl + getX(m) - sx) + "px";
-        box.style.top  = (st + getY(m) - sy) + "px";
-      };
-      const up = () => {
-        document.removeEventListener(moveEvent, mv);
-        document.removeEventListener(upEvent, up);
-      };
-      document.addEventListener(moveEvent, mv);
-      document.addEventListener(upEvent, up);
-    }, opts || {});
+    function onMove(e) {
+      const cx = e.clientX || e.touches[0].clientX;
+      const cy = e.clientY || e.touches[0].clientY;
+      w.style.left = (startL + cx - sx) + "px";
+      w.style.top  = (startT + cy - sy) + "px";
+    }
+    function onUp() {
+      document.removeEventListener("mousemove", onMove, true);
+      document.removeEventListener("mouseup",   onUp,   true);
+      document.removeEventListener("touchmove", onMove, true);
+      document.removeEventListener("touchend",  onUp,   true);
+    }
+    document.addEventListener("mousemove", onMove, true);
+    document.addEventListener("mouseup",   onUp,   true);
+    document.addEventListener("touchmove", onMove, {capture:true, passive:false});
+    document.addEventListener("touchend",  onUp,   true);
   }
 
-  attachDrag(
-    e => e.clientX, e => e.clientY,
-    "mousedown", "mousemove", "mouseup"
-  );
-  attachDrag(
-    e => e.touches[0].clientX, e => e.touches[0].clientY,
-    "touchstart", "touchmove", "touchend",
-    {passive: false}
-  );
-}
-
-function makeResizable(box, rh) {
-  rh.addEventListener("mousedown", e => {
+  btn.addEventListener("mousedown", e => {
     e.preventDefault(); e.stopPropagation();
-    const sx = e.clientX, sfs = parseFloat(box.style.fontSize) || 20;
-    const mv = m => {
-      box.style.fontSize = Math.max(10, Math.min(140, sfs + (m.clientX - sx) * 0.5)) + "px";
-    };
-    const up = () => {
-      document.removeEventListener("mousemove", mv);
-      document.removeEventListener("mouseup", up);
-    };
-    document.addEventListener("mousemove", mv);
-    document.addEventListener("mouseup", up);
+    startDrag(e.clientX, e.clientY);
   });
+  btn.addEventListener("touchstart", e => {
+    e.preventDefault(); e.stopPropagation();
+    startDrag(e.touches[0].clientX, e.touches[0].clientY);
+  }, {passive:false});
 }
 
-window.addEventListener("resize", () => {
-  if (!canvas) return;
-  const tl = document.getElementById("textLayer");
-  tl.style.width  = canvas.offsetWidth  + "px";
-  tl.style.height = canvas.offsetHeight + "px";
-});
+// ── Rotate: drag from btnRot ──
+function attachRotate(w, btn) {
+  function startRotate(clientX, clientY) {
+    const wr = w.getBoundingClientRect();
+    const cx = wr.left + wr.width  / 2;
+    const cy = wr.top  + wr.height / 2;
+    const startAngle = Math.atan2(clientY - cy, clientX - cx) - w._angle;
+
+    function onMove(e) {
+      const mx = e.clientX || e.touches[0].clientX;
+      const my = e.clientY || e.touches[0].clientY;
+      const wr2 = w.getBoundingClientRect();
+      const cx2 = wr2.left + wr2.width  / 2;
+      const cy2 = wr2.top  + wr2.height / 2;
+      w._angle = Math.atan2(my - cy2, mx - cx2) - startAngle;
+      w.style.transform = `rotate(${w._angle}rad)`;
+    }
+    function onUp() {
+      document.removeEventListener("mousemove", onMove, true);
+      document.removeEventListener("mouseup",   onUp,   true);
+      document.removeEventListener("touchmove", onMove, true);
+      document.removeEventListener("touchend",  onUp,   true);
+    }
+    document.addEventListener("mousemove", onMove, true);
+    document.addEventListener("mouseup",   onUp,   true);
+    document.addEventListener("touchmove", onMove, {capture:true, passive:false});
+    document.addEventListener("touchend",  onUp,   true);
+  }
+
+  btn.addEventListener("mousedown", e => {
+    e.preventDefault(); e.stopPropagation();
+    startRotate(e.clientX, e.clientY);
+  });
+  btn.addEventListener("touchstart", e => {
+    e.preventDefault(); e.stopPropagation();
+    startRotate(e.touches[0].clientX, e.touches[0].clientY);
+  }, {passive:false});
+}
+
 
 </script>
 </body>
