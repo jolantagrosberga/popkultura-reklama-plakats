@@ -5,246 +5,218 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reklāmas Recepte – 8. klase</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&family=Bebas+Neue&family=Pacifico&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Bebas+Neue&family=Pacifico&display=swap');
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   :root{
     --yellow:#FFD600;--pink:#FF4D8D;--cyan:#00E5FF;--lime:#B2FF59;--purple:#7C4DFF;
-    --white:#FFFDF7;
-    --bg1:#0d2a5e;--bg2:#071235;
+    --white:#FFFDF7;--bg1:#0d2a5e;--bg2:#071235;
   }
-  html{scroll-behavior:smooth}
-  body{
-    font-family:'Inter',sans-serif;
-    background:linear-gradient(160deg,var(--bg1) 0%,#0a1f4a 45%,var(--bg2) 100%);
-    background-attachment:fixed;
-    color:var(--white);
-    overflow-x:hidden;
-  }
+  html,body{width:100%;height:100%;overflow:hidden}
+  body{font-family:'Inter',sans-serif;background:var(--bg2);color:var(--white)}
+  #app{position:absolute;top:0;left:0;width:1600px;height:900px;transform-origin:0 0;overflow:hidden;
+    background:linear-gradient(160deg,var(--bg1) 0%,#0a1f4a 45%,var(--bg2) 100%)}
+  #app::before{content:'';position:absolute;inset:0;pointer-events:none;background:
+    radial-gradient(ellipse 45% 40% at 10% 15%,rgba(255,214,0,.12) 0%,transparent 65%),
+    radial-gradient(ellipse 40% 50% at 90% 85%,rgba(255,77,141,.11) 0%,transparent 65%),
+    radial-gradient(ellipse 35% 35% at 50% 50%,rgba(0,229,255,.07) 0%,transparent 65%)}
 
-  /* HERO */
-  .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;overflow:hidden}
-  .hero::before{content:'';position:absolute;inset:0;background:
-    radial-gradient(ellipse 55% 45% at 15% 25%,rgba(255,214,0,.18) 0%,transparent 65%),
-    radial-gradient(ellipse 45% 55% at 85% 75%,rgba(255,77,141,.14) 0%,transparent 65%),
-    radial-gradient(ellipse 40% 40% at 50% 50%,rgba(0,229,255,.12) 0%,transparent 65%);
-    pointer-events:none}
-  .hero-tag{font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--yellow);background:rgba(255,214,0,.15);border:1px solid rgba(255,214,0,.4);border-radius:99px;padding:.35rem 1rem;margin-bottom:1.5rem}
-  .hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.4rem,7.5vw,5rem);font-weight:800;line-height:1.05;max-width:780px;color:#fff}
-  .hero h1 span{color:var(--yellow)}
-  .hero p{margin-top:1.25rem;max-width:460px;font-size:1rem;color:rgba(255,255,255,.85);line-height:1.65}
-  .scroll-hint{margin-top:3rem;display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:.6;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:#fff;animation:bounce 2s infinite}
-  .scroll-hint svg{width:18px;height:18px}
-  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+  /* ── TOP BAR ── */
+  .topbar{position:absolute;top:0;left:0;right:0;height:96px;display:flex;align-items:center;gap:20px;
+    padding:0 32px;border-bottom:1px solid rgba(255,255,255,.14);background:rgba(4,10,30,.35);z-index:5}
+  .brand{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .hero-tag{align-self:flex-start;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--yellow);background:rgba(255,214,0,.15);border:1px solid rgba(255,214,0,.4);border-radius:99px;padding:3px 12px}
+  .brand h1{font-family:'Syne',sans-serif;font-size:27px;font-weight:800;line-height:1.05;color:#fff;white-space:nowrap}
+  .brand h1 span{color:var(--yellow)}
+  .tabs{display:flex;gap:10px;margin-left:auto}
+  .tab{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:rgba(255,255,255,.85);cursor:pointer;
+    border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);border-radius:99px;padding:10px 17px;transition:all .15s;white-space:nowrap}
+  .tab:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.5);color:#fff}
+  .tab.active{background:var(--yellow);border-color:var(--yellow);color:#060c18}
+  .tab .n{display:inline-block;width:24px;height:24px;line-height:24px;text-align:center;border-radius:50%;
+    background:rgba(255,255,255,.18);margin-right:8px;font-size:14px}
+  .tab.active .n{background:rgba(6,12,24,.15)}
+  #fsBtn{font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap;
+    background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.55);border-radius:12px;padding:11px 18px;transition:all .15s}
+  #fsBtn:hover{background:rgba(255,255,255,.22)}
 
-  /* GRID */
-  .grid-section{position:relative;width:100%;padding:4vh 0 8vh}
-  .grid-label{text-align:center;font-family:'Syne',sans-serif;font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--pink);margin-bottom:.6rem;opacity:1}
-  .grid-sub{text-align:center;font-size:.78rem;color:rgba(255,255,255,.65);margin-bottom:1.5rem;letter-spacing:.04em}
-  .tilt-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;max-width:660px;margin:0 auto;padding:2vh 1.5rem 4vh}
-  .tile-wrap{opacity:0;transform:translateY(50px) rotateX(15deg)}
-  .tile-wrap.in-view{opacity:1;transform:none;transition:opacity .65s ease,transform .65s cubic-bezier(.22,1,.36,1)}
-  .tile-wrap:nth-child(even).in-view{transition-delay:.1s}
-  .tile{border-radius:.75rem;overflow:hidden;position:relative;cursor:pointer;aspect-ratio:3/4}
+  .screen{position:absolute;top:96px;left:0;right:0;bottom:0;padding:24px 32px 28px;display:none}
+  .screen.active{display:flex;gap:28px;animation:fadeUp .35s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .sec-label{font-family:'Syne',sans-serif;font-size:14px;letter-spacing:.24em;text-transform:uppercase;color:var(--pink);margin-bottom:6px}
+  .sec-sub{font-size:16px;color:rgba(255,255,255,.72);margin-bottom:16px}
+
+  /* ── 1. GALERIJA ── */
+  .gal-left{width:1080px;display:flex;flex-direction:column}
+  .tilt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;flex:1;min-height:0}
+  .tile{border-radius:14px;overflow:hidden;position:relative;cursor:pointer;height:100%;
+    border:2px solid transparent;transition:border-color .2s, transform .2s}
   .tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s ease}
   .tile::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(6,12,24,.75) 0%,transparent 50%);opacity:0;transition:opacity .3s}
   .tile:hover img{transform:scale(1.05)}
   .tile:hover::after{opacity:1}
-  .tile-badge{position:absolute;bottom:.6rem;left:.6rem;background:rgba(10,22,40,.88);backdrop-filter:blur(6px);border-radius:6px;padding:.25rem .55rem;font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow);border:1px solid rgba(255,214,0,.25);z-index:2}
-  .tile-hint{position:absolute;bottom:.6rem;right:.6rem;font-size:.6rem;color:rgba(255,253,247,.5);z-index:2;background:rgba(10,22,40,.6);border-radius:4px;padding:.2rem .4rem}
+  .tile.active{border-color:var(--yellow);box-shadow:0 0 0 3px rgba(255,214,0,.25)}
+  .tile-badge{position:absolute;bottom:10px;left:10px;background:rgba(10,22,40,.88);backdrop-filter:blur(6px);border-radius:7px;
+    padding:5px 10px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--yellow);border:1px solid rgba(255,214,0,.25);z-index:2}
 
-  /* MODAL */
-  .modal-bg{position:fixed;inset:0;background:rgba(4,8,18,.92);backdrop-filter:blur(12px);z-index:200;display:none;align-items:center;justify-content:center;padding:1.5rem}
-  .modal-bg.open{display:flex}
-  .modal{
-    background:linear-gradient(135deg,#122d6b,#0a1d4a);
-    border:1px solid rgba(255,255,255,.18);
-    border-radius:1.25rem;
-    max-width:720px;
-    width:100%;
-    overflow:hidden;
-    animation:fadeUp .3s ease;
-    position:relative;
-    display:flex;
-    flex-direction:row;
-    max-height:82vh;
-  }
-  .modal-img{
-    width:42%;
-    min-width:160px;
-    flex-shrink:0;
-    object-fit:contain;
-    object-position:center;
-    background:#0a1840;
-    padding:.75rem;
-  }
-  .modal-body{padding:1.25rem 1.4rem 1.4rem;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
-  .modal-badge{font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--yellow);margin-bottom:.4rem}
-  .modal-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.6rem;line-height:1.3}
-  .modal-text{font-size:.82rem;line-height:1.65;color:rgba(255,255,255,.88)}
-  .modal-close{position:absolute;top:.7rem;right:.7rem;background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;z-index:10}
-  .modal-close:hover{background:rgba(255,255,255,.28)}
-  @media(max-width:520px){
-    .modal{flex-direction:column;max-height:88vh}
-    .modal-img{width:100%;min-width:unset;max-height:180px;padding:.5rem}
-  }
-  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .detail{flex:1;min-width:0;background:linear-gradient(135deg,#122d6b,#0a1d4a);border:1px solid rgba(255,255,255,.18);
+    border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
+  .detail-img{height:360px;flex:none;background:#0a1840;display:flex;align-items:center;justify-content:center;padding:14px}
+  .detail-img img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px}
+  .detail-body{padding:20px 26px 24px;overflow:hidden}
+  .modal-badge{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--yellow);margin-bottom:8px}
+  .modal-title{font-family:'Syne',sans-serif;font-size:23px;font-weight:800;color:#fff;margin-bottom:12px;line-height:1.25}
+  .modal-text{font-size:16.5px;line-height:1.6;color:rgba(255,255,255,.9)}
+  .detail-empty{flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 36px;gap:18px}
+  .detail-empty h2{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;line-height:1.15}
+  .detail-empty h2 span{color:var(--yellow)}
+  .detail-empty p{font-size:19px;line-height:1.6;color:rgba(255,255,255,.85)}
+  .detail-empty .arrow{font-size:16px;color:var(--cyan);letter-spacing:.06em}
 
-  /* SEPARATOR */
-  .separator{text-align:center;padding:3rem 1rem 1rem}
-  .separator h2{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,5vw,2.6rem);font-weight:800;color:#fff}
-  .separator h2 em{font-style:normal;color:var(--cyan)}
-  .separator p{margin-top:.75rem;color:rgba(255,255,255,.8);font-size:.92rem;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.65}
-
-  /* SIMULATOR */
-  .simulator{max-width:840px;margin:2.5rem auto 0;padding:0 1.25rem 2rem}
-  .step-group{margin-bottom:2.25rem}
-  .step-label{font-family:'Syne',sans-serif;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem}
+  /* ── 2. RECEPTE ── */
+  .sim-left{width:860px;display:flex;flex-direction:column}
+  .sim-left h2{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:#fff}
+  .sim-left h2 em{font-style:normal;color:var(--cyan)}
+  .sim-left > p{margin:6px 0 20px;color:rgba(255,255,255,.8);font-size:17px}
+  .step-group{margin-bottom:22px}
+  .step-label{font-family:'Syne',sans-serif;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;display:flex;align-items:center;gap:10px}
   .step-label::after{content:'';flex:1;height:1px;background:rgba(0,229,255,.3)}
-  .chips{display:flex;flex-wrap:wrap;gap:.5rem}
-  .chip{cursor:pointer;border:1.5px solid rgba(255,255,255,.28);border-radius:99px;padding:.42rem 1rem;font-size:.82rem;font-weight:500;background:rgba(255,255,255,.08);color:#fff;transition:all .18s ease;user-select:none;-webkit-tap-highlight-color:transparent}
-  .chip:hover{border-color:rgba(255,255,255,.55);color:#fff;background:rgba(255,255,255,.16)}
+  .chips{display:flex;flex-wrap:wrap;gap:9px}
+  .chip{cursor:pointer;border:1.5px solid rgba(255,255,255,.28);border-radius:99px;padding:9px 17px;font-size:16.5px;font-weight:500;background:rgba(255,255,255,.08);color:#fff;transition:all .18s ease;user-select:none}
+  .chip:hover{border-color:rgba(255,255,255,.55);background:rgba(255,255,255,.16)}
   .chip.active{background:var(--yellow);border-color:var(--yellow);color:#060c18;font-weight:700}
   .chip.active.pink{background:var(--pink);border-color:var(--pink);color:#fff}
   .chip.active.cyan{background:var(--cyan);border-color:var(--cyan);color:#060c18}
   .chip.active.lime{background:var(--lime);border-color:var(--lime);color:#060c18}
   .chip.active.purple{background:var(--purple);border-color:var(--purple);color:#fff}
-  .multi-hint{font-size:.73rem;color:rgba(255,255,255,.75);margin-top:.45rem}
-
-  .generate-btn{display:block;width:100%;max-width:320px;margin:2.25rem auto 0;padding:.95rem 2rem;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.05em;background:var(--yellow);color:#060c18;border:none;border-radius:99px;cursor:pointer;transition:transform .15s,box-shadow .15s}
+  .multi-hint{font-size:15px;color:rgba(255,255,255,.75);margin-top:9px}
+  .generate-btn{margin-top:10px;align-self:flex-start;padding:16px 40px;font-family:'Syne',sans-serif;font-size:20px;font-weight:700;letter-spacing:.04em;background:var(--yellow);color:#060c18;border:none;border-radius:99px;cursor:pointer;transition:transform .15s,box-shadow .15s}
   .generate-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,214,0,.32)}
-  .generate-btn:active{transform:none}
 
-  /* RESULT */
-  .result-card{margin-top:2.25rem;border-radius:1.1rem;overflow:hidden;background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.2);display:none}
-  .result-card.visible{display:block;animation:fadeUp .4s ease}
-  .result-header{background:linear-gradient(90deg,var(--pink),var(--purple));padding:1.15rem 1.4rem;display:flex;align-items:center;gap:.7rem}
-  .result-header .icon{font-size:1.4rem}
-  .result-header h3{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:#fff}
-  .result-header span{font-size:.76rem;color:rgba(255,255,255,.72);margin-top:.1rem}
-  .result-body{padding:1.4rem}
-  .result-summary{font-size:.9rem;line-height:1.68;color:rgba(255,255,255,.95);margin-bottom:1.4rem}
+  .result-card{flex:1;min-width:0;border-radius:20px;overflow:hidden;background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.2);display:flex;flex-direction:column}
+  .result-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:40px;color:rgba(255,255,255,.7)}
+  .result-empty .big{font-size:64px;opacity:.7}
+  .result-empty p{font-size:19px;line-height:1.55;max-width:420px}
+  .result-header{background:linear-gradient(90deg,var(--pink),var(--purple));padding:18px 24px;display:flex;align-items:center;gap:14px;flex:none}
+  .result-header .icon{font-size:32px}
+  .result-header h3{font-family:'Syne',sans-serif;font-size:21px;font-weight:700;color:#fff}
+  .result-header span{font-size:15px;color:rgba(255,255,255,.8)}
+  .result-body{padding:20px 24px;flex:1;display:flex;flex-direction:column;min-height:0}
+  #resultContent{display:none;flex-direction:column;flex:1;min-height:0}
+  .result-summary{font-size:17px;line-height:1.55;color:rgba(255,255,255,.95);margin-bottom:16px}
   .result-summary strong{color:var(--yellow)}
-  .eff-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.7);margin-bottom:.45rem}
-  .eff-track{height:9px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden;margin-bottom:.4rem}
+  .eff-label{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.7);margin-bottom:7px}
+  .eff-track{height:12px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden;margin-bottom:7px}
   .eff-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--lime),var(--cyan));width:0;transition:width 1.1s cubic-bezier(.22,1,.36,1)}
-  .eff-score{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;color:var(--lime);margin-bottom:1.4rem}
-  .tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
-  @media(max-width:480px){.tips-grid{grid-template-columns:1fr}}
-  .tip-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:.7rem;padding:.8rem .95rem}
-  .tip-icon{font-size:1.15rem;margin-bottom:.3rem}
-  .tip-title{font-family:'Syne',sans-serif;font-size:.76rem;font-weight:700;color:var(--cyan);margin-bottom:.28rem}
-  .tip-text{font-size:.77rem;line-height:1.52;color:rgba(255,255,255,.9)}
-  .result-question{margin-top:1.4rem;background:rgba(255,214,0,.12);border:1px solid rgba(255,214,0,.35);border-radius:.7rem;padding:.95rem 1.15rem}
-  .result-question p{font-size:.83rem;line-height:1.55;color:var(--yellow)}
+  .eff-score{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--lime);margin-bottom:16px}
+  .tips-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .tip-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:12px 14px}
+  .tip-icon{font-size:22px;margin-bottom:4px}
+  .tip-title{font-family:'Syne',sans-serif;font-size:14.5px;font-weight:700;color:var(--cyan);margin-bottom:5px}
+  .tip-text{font-size:14px;line-height:1.45;color:rgba(255,255,255,.9)}
+  .result-question{margin-top:14px;background:rgba(255,214,0,.12);border:1px solid rgba(255,214,0,.35);border-radius:12px;padding:12px 16px}
+  .result-question p{font-size:16px;line-height:1.5;color:var(--yellow)}
   .result-question p::before{content:'💬 '}
-  .loading-dots{display:flex;justify-content:center;gap:.4rem;padding:1.8rem 0}
-  .loading-dots span{width:8px;height:8px;background:var(--yellow);border-radius:50%;animation:dot 1s infinite ease-in-out}
+  .to-poster{margin-top:auto;align-self:flex-end;padding:13px 26px;font-family:'Syne',sans-serif;font-size:17px;font-weight:700;background:var(--cyan);color:#060c18;border:none;border-radius:99px;cursor:pointer}
+  .to-poster:hover{box-shadow:0 6px 22px rgba(0,229,255,.35)}
+  .loading-dots{display:none;justify-content:center;align-items:center;gap:8px;flex:1}
+  .loading-dots span{width:14px;height:14px;background:var(--yellow);border-radius:50%;animation:dot 1s infinite ease-in-out}
   .loading-dots span:nth-child(2){animation-delay:.15s}
   .loading-dots span:nth-child(3){animation-delay:.3s}
   @keyframes dot{0%,80%,100%{transform:scale(.6);opacity:.3}40%{transform:scale(1);opacity:1}}
 
-  /* POSTER SECTION */
-  .poster-section{max-width:840px;margin:0 auto;padding:0 1.25rem 5rem;display:none}
-  .poster-section.visible{display:block;animation:fadeUp .5s ease}
-  .section-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);margin:2.5rem 0 1.8rem}
-  .poster-section-title{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:.3rem}
-  .poster-section-sub{font-size:.82rem;color:rgba(255,255,255,.75);margin-bottom:1.4rem}
-  .poster-layout{display:flex;gap:1.25rem;align-items:flex-start;flex-wrap:wrap}
-
-  /* TOOLBAR */
-  .poster-tools{display:flex;flex-direction:column;gap:.45rem;padding:.6rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:.9rem;min-width:48px}
-  .tool-btn{width:36px;height:36px;border-radius:.45rem;border:1.5px solid rgba(255,255,255,.14);background:transparent;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.95rem;transition:all .14s;font-family:'Syne',sans-serif;font-weight:700}
-  .tool-btn:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.6);color:#fff}
+  /* ── 3. PLAKĀTS ── */
+  .poster-tools{width:96px;flex:none;display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:16px}
+  .tool-btn{width:62px;height:50px;border-radius:10px;border:1.5px solid rgba(255,255,255,.18);background:transparent;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;transition:all .14s;font-family:'Syne',sans-serif;font-weight:800}
+  .tool-btn:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.6)}
   .tool-btn.active{background:var(--yellow);border-color:var(--yellow);color:#060c18}
-  .tool-divider{height:1px;background:rgba(255,255,255,.2);margin:.1rem 0}
-  .color-dot{width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(255,255,255,.18);cursor:pointer;margin:0 auto;display:block;transition:transform .14s,border-color .14s}
-  .color-dot:hover{transform:scale(1.18)}
-  .color-dot.active{border-color:#fff;transform:scale(1.22)}
-  .size-btn{font-family:'Syne',sans-serif;font-size:.58rem;font-weight:700;color:rgba(255,255,255,.8);text-align:center;padding:.18rem 0;border:1px solid rgba(255,255,255,.09);border-radius:.32rem;cursor:pointer;transition:all .14s}
-  .size-btn:hover,.size-btn.active{background:rgba(255,255,255,.22);color:#fff;border-color:rgba(255,255,255,.6)}
-  .font-btn{width:36px;height:26px;border-radius:.38rem;border:1.5px solid rgba(255,255,255,.3);background:transparent;color:rgba(255,255,255,.85);cursor:pointer;font-size:.7rem;transition:all .14s;text-align:center;line-height:24px;padding:0;display:block}
+  .tool-divider{width:100%;height:1px;background:rgba(255,255,255,.2);margin:2px 0}
+  .colors{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .color-dot{width:28px;height:28px;border-radius:50%;border:3px solid rgba(255,255,255,.18);cursor:pointer;transition:transform .14s,border-color .14s}
+  .color-dot:hover{transform:scale(1.15)}
+  .color-dot.active{border-color:#fff;transform:scale(1.2)}
+  .sizes{display:flex;gap:5px}
+  .size-btn{width:22px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:rgba(255,255,255,.8);text-align:center;padding:4px 0;border:1px solid rgba(255,255,255,.2);border-radius:6px;cursor:pointer;transition:all .14s}
+  .size-btn:hover,.size-btn.active{background:rgba(255,255,255,.25);color:#fff;border-color:rgba(255,255,255,.7)}
+  .font-btn{width:62px;height:34px;border-radius:8px;border:1.5px solid rgba(255,255,255,.3);background:transparent;color:rgba(255,255,255,.85);cursor:pointer;font-size:16px;transition:all .14s;text-align:center;line-height:31px}
   .font-btn:hover{background:rgba(255,255,255,.2);color:#fff}
   .font-btn.active{background:var(--cyan);border-color:var(--cyan);color:#060c18}
 
-  /* CANVAS WRAP */
-  .poster-canvas-wrap{flex:1;min-width:210px;position:relative}
-  .poster-info-bar{display:flex;gap:.45rem;margin-bottom:.55rem;flex-wrap:wrap}
-  .poster-tag{font-size:.67rem;font-weight:600;padding:.18rem .6rem;border-radius:99px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9)}
-  .poster-tag.hl{background:rgba(255,214,0,.14);color:var(--yellow)}
+  .poster-stage{position:relative;width:570px;height:760px;flex:none}
+  #posterCanvas{display:block;width:570px;height:760px;border-radius:14px;border:2px solid rgba(255,255,255,.3);background:#fff;touch-action:none;cursor:crosshair}
+  #twLayer{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10}
 
-  /* THE CANVAS — white poster */
-  #posterCanvas{display:block;width:100%;aspect-ratio:3/4;border-radius:.9rem;border:2px solid rgba(255,255,255,.3);background:#fff;touch-action:none;cursor:crosshair;position:relative;z-index:1}
+  .poster-side{flex:1;min-width:0;display:flex;flex-direction:column;gap:16px}
+  .poster-side h2{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff}
+  .poster-side .sub{font-size:17px;color:rgba(255,255,255,.8);line-height:1.55}
+  .info-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+  .info-box .lbl{font-size:13px;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.65)}
+  .poster-info-bar{display:flex;gap:8px;flex-wrap:wrap}
+  .poster-tag{font-size:15px;font-weight:600;padding:6px 12px;border-radius:99px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.92)}
+  .poster-tag.hl{background:rgba(255,214,0,.16);color:var(--yellow)}
+  .poster-tag.empty{background:transparent;border:1px dashed rgba(255,255,255,.35);color:rgba(255,255,255,.7);cursor:pointer}
+  .hint-list{list-style:none;display:flex;flex-direction:column;gap:9px;font-size:15.5px;line-height:1.45;color:rgba(255,255,255,.88)}
+  .hint-list b{color:var(--cyan)}
+  .poster-actions{display:flex;gap:12px;margin-top:auto}
+  .p-btn{padding:12px 22px;border-radius:99px;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.08);color:#fff;font-size:16px;font-weight:600;cursor:pointer;transition:all .14s;font-family:'Inter',sans-serif}
+  .p-btn:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.7)}
+  .p-btn.save{background:var(--yellow);border-color:var(--yellow);color:#060c18;font-weight:700}
 
-  /* TEXT OVERLAY LAYER */
-
-
-
-  .poster-actions{display:flex;gap:.55rem;margin-top:.7rem;flex-wrap:wrap}
-  .p-btn{padding:.4rem .95rem;border-radius:99px;border:1.5px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);color:#fff;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .14s;font-family:'Inter',sans-serif}
-  .p-btn:hover{background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.6)}
-  .hint-row{font-size:.72rem;color:rgba(255,255,255,.7);margin-top:.55rem;line-height:1.5}
-
-  /* ── Text widget overlay ── */
-  .tw{position:absolute;touch-action:none;cursor:default;}
-  .tw textarea{
-    display:block;background:transparent;border:none;outline:none;
-    font-family:inherit;font-size:inherit;font-weight:bold;color:inherit;
-    line-height:1.2;resize:none;padding:0;margin:0;
-    white-space:nowrap;overflow:hidden;min-width:60px;
-    cursor:text;pointer-events:auto;
-  }
-  /* border shown only when widget active */
-  .tw.active{outline:2px dashed rgba(255,214,0,.8);}
-  /* control buttons */
-  .tw-btn{
-    position:absolute;width:22px;height:22px;border-radius:50%;
-    border:2px solid #fff;display:flex;align-items:center;justify-content:center;
-    font-size:.75rem;font-weight:700;cursor:pointer;
-    pointer-events:auto;user-select:none;line-height:1;z-index:5;
-  }
-  .tw-move{background:#1a3a8a;color:#FFD600;top:-12px;left:50%;transform:translateX(-50%);cursor:move;}
-  .tw-del {background:#e53935;color:#fff;top:-12px;right:-12px;}
-  .tw-ok  {background:#2e7d32;color:#fff;bottom:-12px;left:-12px;}
-  .tw-rot {background:#7C4DFF;color:#fff;bottom:-12px;right:-12px;cursor:alias;}
+  /* ── Teksta logs ── */
+  .tw{position:absolute;touch-action:none;cursor:default}
+  .tw.active{outline:2px dashed rgba(255,214,0,.9)}
+  .tw-btn{position:absolute;width:26px;height:26px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:700;cursor:pointer;pointer-events:auto;user-select:none;line-height:1;z-index:5;font-family:'Inter',sans-serif}
+  .tw-move{background:#1a3a8a;color:#FFD600;top:-14px;left:50%;transform:translateX(-50%);cursor:move}
+  .tw-del {background:#e53935;color:#fff;top:-14px;right:-14px}
+  .tw-ok  {background:#2e7d32;color:#fff;bottom:-14px;left:-14px}
+  .tw-rot {background:#7C4DFF;color:#fff;bottom:-14px;right:-14px;cursor:alias}
 </style>
 </head>
 <body>
+<div id="app">
 
-<section class="hero">
-  <div class="hero-tag">8. klase · Vizuālā māksla · Tēma 8.1</div>
-  <h1>Kā rada <span>iespaidīgu<br>reklāmu?</span></h1>
-  <p>Izpēti slavenas reklāmu kampaņas un izmēģini savu reklāmas recepti — kādi elementi padara reklāmu neaizmirstamu?</p>
-  <div class="scroll-hint">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-    ritini zemāk
+<header class="topbar">
+  <div class="brand">
+    <div class="hero-tag">8. klase · Vizuālā māksla · Tēma 8.1</div>
+    <h1>Kā rada <span>iespaidīgu reklāmu?</span></h1>
   </div>
-</section>
+  <nav class="tabs">
+    <div class="tab active" data-screen="s1"><span class="n">1</span>Slavenas kampaņas</div>
+    <div class="tab" data-screen="s2"><span class="n">2</span>Reklāmas recepte</div>
+    <div class="tab" data-screen="s3"><span class="n">3</span>Mans plakāts</div>
+  </nav>
+  <button id="fsBtn">⛶ Atvērt pilnekrānu</button>
+</header>
 
-<section class="grid-section">
-  <div class="grid-label">Slavenas reklāmu kampaņas</div>
-  <div class="grid-sub">Spied uz attēla, lai uzzinātu vairāk →</div>
-  <div class="tilt-grid" id="tiltGrid"></div>
-</section>
-
-<div class="modal-bg" id="modalBg" onclick="closeModal(event)">
-  <div class="modal" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <img id="modalImg" src="" alt="">
-    <div class="modal-body">
+<!-- 1. GALERIJA -->
+<section class="screen active" id="s1">
+  <div class="gal-left">
+    <div class="sec-label">Slavenas reklāmu kampaņas</div>
+    <div class="sec-sub">Spied uz attēla, lai uzzinātu vairāk →</div>
+    <div class="tilt-grid" id="tiltGrid"></div>
+  </div>
+  <div class="detail" id="detail">
+    <div class="detail-empty" id="detailEmpty">
+      <h2>Kā rada <span>iespaidīgu reklāmu?</span></h2>
+      <p>Izpēti slavenas reklāmu kampaņas un izmēģini savu reklāmas recepti — kādi elementi padara reklāmu neaizmirstamu?</p>
+      <div class="arrow">← Izvēlies kampaņu kreisajā pusē</div>
+    </div>
+    <div class="detail-img" id="detailImgBox" style="display:none"><img id="modalImg" src="" alt=""></div>
+    <div class="detail-body" id="detailBody" style="display:none">
       <div class="modal-badge" id="modalBadge"></div>
       <div class="modal-title" id="modalTitle"></div>
       <div class="modal-text"  id="modalText"></div>
     </div>
   </div>
-</div>
+</section>
 
-<div class="separator">
-  <h2>Veido savu <em>reklāmas recepti</em></h2>
-  <p>Izvēlies produktu, auditoriju un 1–3 paņēmienus — un uzzini, cik spēcīga būtu tava reklāma!</p>
-</div>
-
-<div class="simulator">
-  <div class="step-group">
+<!-- 2. RECEPTE -->
+<section class="screen" id="s2">
+  <div class="sim-left">
+    <h2>Veido savu <em>reklāmas recepti</em></h2>
+    <p>Izvēlies produktu, auditoriju un 1–3 paņēmienus — un uzzini, cik spēcīga būtu tava reklāma!</p>
+    <div class="step-group">
     <div class="step-label">1. solis — produkts</div>
     <div class="chips" id="products">
       <div class="chip active" data-group="products" data-val="sporta apavi">👟 Sporta apavi</div>
@@ -283,38 +255,41 @@
     </div>
     <div class="multi-hint" id="techCount">Izvēlēts: 1 / 3</div>
   </div>
-  <button class="generate-btn" onclick="generateResult()">✨ Veidot manu recepti!</button>
-
+    <button class="generate-btn" onclick="generateResult()">✨ Veidot manu recepti!</button>
+  </div>
   <div class="result-card" id="resultCard">
-    <div class="result-header">
+    <div class="result-empty" id="resultEmpty">
+      <div class="big">🧪</div>
+      <p>Izvēlies sastāvdaļas un spied <b>“Veidot manu recepti!”</b> — šeit parādīsies tavas reklāmas novērtējums un padomi.</p>
+    </div>
+    <div class="result-header" id="resultHeader" style="display:none">
       <span class="icon">🎯</span>
       <div><h3 id="resultTitle"></h3><span id="resultSub"></span></div>
     </div>
-    <div class="result-body">
-      <div id="loadingDots" class="loading-dots" style="display:none"><span></span><span></span><span></span></div>
-      <div id="resultContent" style="display:none">
+    <div class="result-body" id="resultBody" style="display:none">
+      <div id="loadingDots" class="loading-dots"><span></span><span></span><span></span></div>
+      <div id="resultContent">
         <p class="result-summary" id="resultSummary"></p>
         <div class="eff-label">Efektivitātes novērtējums</div>
         <div class="eff-track"><div class="eff-fill" id="effFill"></div></div>
         <div class="eff-score" id="effScore"></div>
         <div class="tips-grid" id="tipsGrid"></div>
         <div class="result-question"><p id="reflectionQ"></p></div>
+        <button class="to-poster" onclick="showScreen('s3')">✏️ Zīmēt plakātu →</button>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<div class="poster-section" id="posterSection">
-  <div class="section-divider"></div>
-  <div class="poster-section-title">✏️ Uzzīmē savu reklāmas plakātu</div>
-  <div class="poster-section-sub">Izvēlies rīku, krāsu un šriftu — klikšķini uz plakāta, lai pievienotu tekstu. Velc tekstu ar peli, stūra punkts maina izmēru.</div>
-  <div class="poster-layout">
-    <div class="poster-tools" id="toolbar">
-      <button class="tool-btn active" id="toolPen"    onclick="setTool('pen')"    title="Zīmulis">✏️</button>
-      <button class="tool-btn"        id="toolMarker" onclick="setTool('marker')" title="Marķieris">🖊️</button>
-      <button class="tool-btn"        id="toolText"   onclick="setTool('text')"   title="Teksts" style="font-size:.8rem;font-weight:800">T</button>
-      <button class="tool-btn"        id="toolEraser" onclick="setTool('eraser')" title="Dzēšgumija">⬜</button>
-      <div class="tool-divider"></div>
+<!-- 3. PLAKĀTS -->
+<section class="screen" id="s3">
+  <div class="poster-tools" id="toolbar">
+    <button class="tool-btn active" id="toolPen"    onclick="setTool('pen')"    title="Zīmulis">✏️</button>
+    <button class="tool-btn"        id="toolMarker" onclick="setTool('marker')" title="Marķieris">🖊️</button>
+    <button class="tool-btn"        id="toolText"   onclick="setTool('text')"   title="Teksts">T</button>
+    <button class="tool-btn"        id="toolEraser" onclick="setTool('eraser')" title="Dzēšgumija">⬜</button>
+    <div class="tool-divider"></div>
+    <div class="colors">
       <div class="color-dot active" style="background:#111"    data-color="#111"    onclick="setColor(this)"></div>
       <div class="color-dot"        style="background:#e53935" data-color="#e53935" onclick="setColor(this)"></div>
       <div class="color-dot"        style="background:#FF4D8D" data-color="#FF4D8D" onclick="setColor(this)"></div>
@@ -324,32 +299,48 @@
       <div class="color-dot"        style="background:#00BCD4" data-color="#00BCD4" onclick="setColor(this)"></div>
       <div class="color-dot"        style="background:#7C4DFF" data-color="#7C4DFF" onclick="setColor(this)"></div>
       <div class="color-dot"        style="background:#fff;border-color:rgba(255,255,255,.5)" data-color="#ffffff" onclick="setColor(this)"></div>
-      <div class="tool-divider"></div>
+    </div>
+    <div class="tool-divider"></div>
+    <div class="sizes">
       <div class="size-btn active" data-size="2"  onclick="setSize(this)">S</div>
       <div class="size-btn"        data-size="7"  onclick="setSize(this)">M</div>
       <div class="size-btn"        data-size="16" onclick="setSize(this)">L</div>
-      <div class="tool-divider"></div>
-      <div class="font-btn active" data-font="Syne" title="Syne" onclick="setFont(this)">Aa</div>
-      <div class="font-btn" data-font="Bebas Neue" title="Bebas Neue" onclick="setFont(this)" style="font-family:'Bebas Neue'">BB</div>
-      <div class="font-btn" data-font="Pacifico"   title="Pacifico"   onclick="setFont(this)" style="font-family:'Pacifico';font-size:.58rem">Pa</div>
     </div>
-    <div class="poster-canvas-wrap" id="canvasWrap">
-      <div class="poster-info-bar">
-        <span class="poster-tag hl" id="pTagProduct"></span>
-        <span class="poster-tag"    id="pTagAudience"></span>
-        <span class="poster-tag"    id="pTagTech"></span>
+    <div class="tool-divider"></div>
+    <div class="font-btn active" data-font="Syne" title="Syne" onclick="setFont(this)" style="font-family:'Syne';font-weight:800">Aa</div>
+    <div class="font-btn" data-font="Bebas Neue" title="Bebas Neue" onclick="setFont(this)" style="font-family:'Bebas Neue';font-size:20px">BB</div>
+    <div class="font-btn" data-font="Pacifico"   title="Pacifico"   onclick="setFont(this)" style="font-family:'Pacifico';font-size:15px">Pa</div>
+  </div>
+  <div class="poster-stage" id="posterStage">
+    <canvas id="posterCanvas"></canvas>
+    <div id="twLayer"></div>
+  </div>
+  <div class="poster-side">
+    <h2>✏️ Uzzīmē savu reklāmas plakātu</h2>
+    <div class="sub">Izvēlies rīku, krāsu un šriftu. Ar teksta rīku (T) klikšķini uz plakāta, lai pievienotu tekstu.</div>
+    <div class="info-box">
+      <div class="lbl">Tava reklāmas recepte</div>
+      <div class="poster-info-bar" id="posterInfo">
+        <span class="poster-tag empty" onclick="showScreen('s2')">Vispirms izveido recepti 2. solī →</span>
       </div>
-      <div style="position:relative;display:inline-block;width:100%">
-        <canvas id="posterCanvas"></canvas>
-        <div id="twLayer" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10;border-radius:.9rem;overflow:visible;"></div>
-      </div>
-      <div class="poster-actions">
-        <button class="p-btn" onclick="undoCanvas()">↩️ Atcelt</button>
-        <button class="p-btn" onclick="clearCanvas()">🗑️ Notīrīt visu</button>
-      </div>
-      <div class="hint-row">💡 Teksts (T): noklikšķini → ieraksti → ✥ pārvieto · ↻ pagriež · ✓ apstiprina uz plakāta · ✕ dzēš lodziņu. Pēc apstiprināšanas — dzēšamgumija izdzēš.</div>
+    </div>
+    <div class="info-box">
+      <div class="lbl">Kā lietot tekstu</div>
+      <ul class="hint-list">
+        <li><b>T</b> → noklikšķini uz plakāta un ieraksti tekstu</li>
+        <li><b>✥</b> pārvieto · <b>↻</b> pagriež</li>
+        <li><b>✓</b> apstiprina tekstu uz plakāta · <b>✕</b> dzēš lodziņu</li>
+        <li>Pēc apstiprināšanas tekstu var izdzēst ar dzēšgumiju.</li>
+      </ul>
+    </div>
+    <div class="poster-actions">
+      <button class="p-btn" onclick="undoCanvas()">↩️ Atcelt</button>
+      <button class="p-btn" onclick="clearCanvas()">🗑️ Notīrīt visu</button>
+      <button class="p-btn save" onclick="savePoster()">💾 Saglabāt PNG</button>
     </div>
   </div>
+</section>
+
 </div>
 
 <script>
@@ -366,64 +357,15 @@ const IMG = {
 
 const GALLERY = [
   { key:"sporta", badge:"Emocijas · Nike", title:"Nike — \"Just Do It\" (1988)", text:"Viens no vēsturē spēcīgākajiem saukļiem. Sākotnēji paredzēts gados vecākam skrējējam, bet kļuva par simbolu visiem, kas uzdrošinās pārsniegt savas robežas. Reklāmā nav redzams neviens produkts — tikai cilvēks un mērķis. Tieši šī pieeja — emocionāla, nevis informatīva — mainīja sporta mārketinga vēsturi." },
-  { key:"apavi", badge:"Retro stils · Apavi", title:"Shoes to Die For — retro plakāts (1950. gadi)", text:"Šis plakāts demonstrē klasisku retroreklāmas stilu — spilgtas krāsas, treknraksts, humors. 50.–60. gados reklāmas bieži izmantoja tieši šādu ilustratīvu pieeju ar asprātīgu tekstu. \"Hot\" un \"to die for\" ir hiperbola — pārspīlējums, kas pievilina un smeida vienlaikus." },
+  { key:"apavi", badge:"Retro stils · Apavi", title:"Shoes to Die For — retro plakāts (1950. gadi)", text:"Šis plakāts demonstrē klasisku retroreklāmas stilu — spilgtas krāsas, treknraksts, humors. 50.–60. gados reklāmas bieži izmantoja tieši šādu ilustratīvu pieeju ar asprātīgu tekstu. \"Hot\" un \"to die for\" ir hiperbola — pārspīlējums, kas pievilina un vienlaikus uzjautrina." },
   { key:"modes", badge:"Modes trends · Vogue", title:"Vogue — Fashion Changes, But Style Endures", text:"Vogue žurnāls ir modes industrijas simbols kopš 1892. gada. Šis ilustratīvais vāks spilgti parāda mūsdienu modes reklāmas valodu — ilustrācija aizstāj fotogrāfiju, teksts ir īss un filozofisks. Dzīvnieks reklāmā rada emocionālu saikni un piešķir personību zīmolam." },
   { key:"skaistums", badge:"Spilgtums · Kosmētika", title:"Skaistumkopšanas reklāma — krāsu pop estētika", text:"Šī reklāma izmanto pop art tradīciju — pārspīlētas, nereālistiskas krāsas, kas raisa prieku un uzmanību. Makaroni kā aksesuāri rada absurdu situāciju, ko nevar ignorēt. Skaistumkopšanas industrija bieži izmanto šādu vizuālo šoku, lai izceltos starp simtiem konkurentu." },
-  { key:"apple", badge:"Tehnoloģijas · Apple", title:"Apple Computer — varavīksnes logotips (1977–1998)", text:"Varavīksnes logotips bija Apple simbols 21 gadu. Tas tika izveidots, lai pierādītu, ka Apple II dators spēj attēlot krāsas — kas 1977. gadā bija revolūcija. Logotipa dizainers Rob Janoff to iecerēja vienkāršu, atpazīstamu un draudzīgu — pretstatā nopietnajai IBM estētikai." },
+  { key:"apple", badge:"Tehnoloģijas · Apple", title:"Apple Computer — varavīksnes logotips (1977–1998)", text:"Varavīksnes logotips bija Apple simbols 21 gadu. Tas tika izveidots, lai pierādītu, ka Apple II dators spēj attēlot krāsas — kas 1977. gadā bija revolūcija. Logotipa dizainers Robs Janofs to iecerēja vienkāršu, atpazīstamu un draudzīgu — pretstatā nopietnajai IBM estētikai." },
   { key:"sociala", badge:"Sociāls ziņojums · Vārda brīvība", title:"Freedom of Speech — plakāts", text:"Mikrofons kā putnu būris — šis plakāts ar minimālistiskiem līdzekļiem pauž spēcīgu politisku ideju. Vārda brīvība tiek rādīta kā ierobežota, bet mikrofons vienlaikus ir iespēja runāt. Sociālā reklāma bieži izmanto metaforas un simbolus, jo tie iedarbojas emocionāli daudz spēcīgāk nekā teksts." },
   { key:"maksla", badge:"Māksla · Pop Art", title:"Miķelānželo Dāvids — pop art interpretācija", text:"Šis darbs parāda, kā klasiskā māksla tiek izmantota mūsdienu vizuālajā komunikācijā. Miķelānželo skulptūra apvienota ar pop art krāsām un formas elementiem. Reklāmas pasaulē mākslas atsauces rada intelektuālas asociācijas un prestija sajūtu — produkts tiek uztverts kā augstākas kategorijas." },
   { key:"humors", badge:"Humors · Darba vide", title:"You Do Not Have to Be Crazy to Work Here (2010. gadi)", text:"Šis absurdais humors ar suni uzvalkā kļuva par virālu mēmu. Reklāma izmanto pašironiju un neiespējamo situāciju, kas izraisa smaidu. Pētījumi rāda: cilvēki labprātāk dalās ar humoristisku saturu — tādēļ šāds stils ir īpaši efektīvs digitālajā vidē un sociālajos tīklos." },
 ];
 
-
-// Build tiles
-const grid = document.getElementById("tiltGrid");
-GALLERY.forEach((item,i) => {
-  const shortBadge = item.badge.split(" \u00b7 ")[0];
-  grid.innerHTML += `<div class="tile-wrap"><div class="tile" onclick="openModal(${i})"><img src="${IMG[item.key]}" alt="${item.badge}" loading="lazy"><div class="tile-badge">${shortBadge}</div><div class="tile-hint">\u2192</div></div></div>`;
-});
-
-// Tile scroll animation
-const tObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("in-view"); tObs.unobserve(e.target); } });
-}, {threshold:0.08});
-document.querySelectorAll(".tile-wrap").forEach(t => tObs.observe(t));
-
-// Modal
-function openModal(i) {
-  const d = GALLERY[i];
-  document.getElementById("modalImg").src   = IMG[d.key];
-  document.getElementById("modalBadge").textContent = d.badge;
-  document.getElementById("modalTitle").textContent = d.title;
-  document.getElementById("modalText").textContent  = d.text;
-  document.getElementById("modalBg").classList.add("open");
-}
-function closeModal(e) {
-  if (!e || e.target === document.getElementById("modalBg"))
-    document.getElementById("modalBg").classList.remove("open");
-}
-
-// CHIPS
-document.querySelectorAll(".chip").forEach(chip => {
-  chip.addEventListener("click", () => {
-    const g = chip.dataset.group;
-    if (g === "techniques") {
-      const active = document.querySelectorAll("#techniques .chip.active");
-      if (chip.classList.contains("active")) {
-        if (active.length > 1) chip.classList.remove("active");
-      } else {
-        if (active.length < 3) chip.classList.add("active");
-      }
-      document.getElementById("techCount").textContent =
-        "Izvēlēts: " + document.querySelectorAll("#techniques .chip.active").length + " / 3";
-    } else {
-      document.querySelectorAll("[data-group=\"" + g + "\"]").forEach(c => c.classList.remove("active"));
-      chip.classList.add("active");
-    }
-  });
-});
-
-// GENERATOR
 const REC = {
   effBase: {"humors":22,"slaven\u012bba":20,"emocijas":25,"m\u0101kslas darbs":18,"popkult\u016bras trends":20,"soci\u0101ls zi\u0146ojums":22},
   synergy: {"humors+emocijas":8,"slaven\u012bba+popkult\u016bras trends":7,"emocijas+soci\u0101ls zi\u0146ojums":9,"humors+slaven\u012bba":5,"m\u0101kslas darbs+emocijas":7},
@@ -454,24 +396,71 @@ const REC = {
     "soci\u0101ls zi\u0146ojums": {icon:"🌍", title:"Kāpēc vērtības darbojas?", text:"Mūsdienās 6 no 10 jauniešiem izvēlas zīmolu, kas iestājas par kādu svarīgu lietu."}
   },
   questions: [
-    "Vai tu esi redzējis reklāmu, kas izmanto tieši šo kombināciju? Kāds produkts?",
+    "Vai esi redzējis reklāmu, kas izmanto tieši šo kombināciju? Kāds produkts?",
     "Kā šī recepte mainītos, ja mērķauditorija būtu vecāki cilvēki?",
     "Vai šāda reklāma varētu izraisīt negatīvas emocijas? Kādos apstākļos?",
-    "Iedoma sloganu šai reklāmai! Kādam tam jābūt, lai paliktu atmiņā?",
+    "Izdomā saukli šai reklāmai! Kādam tam jābūt, lai tas paliktu atmiņā?",
     "Kā TikTok vai Instagram mainītu šīs receptes izpildi?"
   ]
 };
 
+// ═══════ EKRĀNI ═══════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active', s.id===id));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.screen===id));
+  if(id!=='s3' && activeWidget) confirmWidget(activeWidget);
+}
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>showScreen(t.dataset.screen)));
+
+// ═══════ GALERIJA ═══════
+const grid = document.getElementById("tiltGrid");
+GALLERY.forEach((item,i) => {
+  const shortBadge = item.badge.split(" · ")[0];
+  grid.innerHTML += `<div class="tile" data-i="${i}" onclick="openModal(${i})"><img src="${IMG[item.key]}" alt="${item.badge}"><div class="tile-badge">${shortBadge}</div></div>`;
+});
+function openModal(i) {
+  const d = GALLERY[i];
+  document.querySelectorAll('.tile').forEach(t=>t.classList.toggle('active', +t.dataset.i===i));
+  document.getElementById("detailEmpty").style.display = "none";
+  document.getElementById("detailImgBox").style.display = "flex";
+  document.getElementById("detailBody").style.display = "block";
+  document.getElementById("modalImg").src = IMG[d.key];
+  document.getElementById("modalBadge").textContent = d.badge;
+  document.getElementById("modalTitle").textContent = d.title;
+  document.getElementById("modalText").textContent  = d.text;
+}
+
+// ═══════ IZVĒLES ═══════
+document.querySelectorAll(".chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    const g = chip.dataset.group;
+    if (g === "techniques") {
+      const active = document.querySelectorAll("#techniques .chip.active");
+      if (chip.classList.contains("active")) { if (active.length > 1) chip.classList.remove("active"); }
+      else { if (active.length < 3) chip.classList.add("active"); }
+      document.getElementById("techCount").textContent =
+        "Izvēlēts: " + document.querySelectorAll("#techniques .chip.active").length + " / 3";
+    } else {
+      document.querySelectorAll("[data-group=\"" + g + "\"]").forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+    }
+  });
+});
+
+// ═══════ RECEPTES ĢENERATORS ═══════
 function generateResult() {
   const prod  = document.querySelector("#products .chip.active")?.dataset.val || "produkts";
   const aud   = document.querySelector("#audiences .chip.active")?.dataset.val || "jaunieši";
   const techs = [...document.querySelectorAll("#techniques .chip.active")].map(c => c.dataset.val);
-  const card  = document.getElementById("resultCard");
   const ld    = document.getElementById("loadingDots");
   const cont  = document.getElementById("resultContent");
-  card.classList.add("visible"); ld.style.display = "flex"; cont.style.display = "none";
-  document.getElementById("posterSection").classList.remove("visible");
-  card.scrollIntoView({behavior:"smooth", block:"nearest"});
+  document.getElementById("resultEmpty").style.display = "none";
+  document.getElementById("resultHeader").style.display = "flex";
+  document.getElementById("resultBody").style.display = "flex";
+  document.getElementById("resultTitle").textContent = "Gatavojam recepti…";
+  document.getElementById("resultSub").textContent = "";
+  document.getElementById("effFill").style.width = "0";
+  ld.style.display = "flex"; cont.style.display = "none";
 
   setTimeout(() => {
     let sc = 0;
@@ -484,17 +473,18 @@ function generateResult() {
     techs.forEach(t => { sc += bn[t] || 0; });
     sc = Math.min(sc, 98);
 
-    document.getElementById("resultTitle").textContent = prod.charAt(0).toUpperCase()+prod.slice(1)+" \u2192 "+aud;
-    document.getElementById("resultSub").textContent   = "Pa\u0146\u0113mieni: "+techs.map(t => "\u201c"+t+"\u201d").join(" + ");
-    const combo = techs.length > 1 ? " Kombin\u0101cij\u0101 ar <strong>"+techs.slice(1).join(" un ")+"</strong> \u0161\u012b recepte k\u013cuva v\u0113l sp\u0113c\u012bg\u0101ka." : "";
+    document.getElementById("resultTitle").textContent = prod.charAt(0).toUpperCase()+prod.slice(1)+" → "+aud;
+    document.getElementById("resultSub").textContent   = "Paņēmieni: "+techs.map(t => "“"+t+"”").join(" + ");
+    const combo = techs.length > 1 ? " Kombinācijā ar <strong>"+techs.slice(1).join(" un ")+"</strong> šī recepte kļūst vēl spēcīgāka." : "";
     document.getElementById("resultSummary").innerHTML =
-      "Tava reklama paredz\u0113ta <strong>"+aud+"</strong>, reklam\u0113jot <strong>"+prod+"</strong>. "+(REC.summaries[techs[0]]||"")+combo;
+      "Tava reklāma paredzēta mērķauditorijai <strong>"+aud+"</strong>, reklamējot produktu <strong>"+prod+"</strong>. "+(REC.summaries[techs[0]]||"")+combo;
 
     setTimeout(() => { document.getElementById("effFill").style.width = sc+"%"; }, 120);
-    const lbl = sc>=85?"🔥 Ļoti augsta":sc>=70?"✅ Augsta":sc>=55?"⚡ Vid\u0113ja":"💡 Zema";
-    document.getElementById("effScore").textContent = lbl+" efektivit\u0101te \u2014 "+sc+" / 100";
+    const lbl = sc>=85?"🔥 Ļoti augsta":sc>=70?"✅ Augsta":sc>=55?"⚡ Vidēja":"💡 Zema";
+    document.getElementById("effScore").textContent = lbl+" efektivitāte — "+sc+" / 100";
 
     const tg = document.getElementById("tipsGrid"); tg.innerHTML = "";
+    tg.style.gridTemplateColumns = "repeat("+Math.max(1,Math.min(3,techs.length))+",1fr)";
     techs.slice(0,3).forEach(t => {
       const tip = REC.tips[t]; if (!tip) return;
       tg.innerHTML += "<div class=\"tip-card\"><div class=\"tip-icon\">"+tip.icon+"</div><div class=\"tip-title\">"+tip.title+"</div><div class=\"tip-text\">"+tip.text+"</div></div>";
@@ -502,67 +492,29 @@ function generateResult() {
     document.getElementById("reflectionQ").textContent =
       REC.questions[Math.floor(Math.random()*REC.questions.length)];
 
-    ld.style.display = "none"; cont.style.display = "block";
+    ld.style.display = "none"; cont.style.display = "flex";
 
-    document.getElementById("pTagProduct").textContent  = "🛍️ "+prod;
-    document.getElementById("pTagAudience").textContent = "👥 "+aud;
-    document.getElementById("pTagTech").textContent     = "🎨 "+techs.join(", ");
-    const ps = document.getElementById("posterSection");
-    ps.classList.add("visible");
-    initCanvas();
-    setTimeout(() => ps.scrollIntoView({behavior:"smooth", block:"start"}), 650);
-  }, 1400);
+    document.getElementById("posterInfo").innerHTML =
+      '<span class="poster-tag hl">🛍️ '+prod+'</span><span class="poster-tag">👥 '+aud+'</span><span class="poster-tag">🎨 '+techs.join(", ")+'</span>';
+  }, 1100);
 }
 
-// ═══════ CANVAS ═══════
+// ═══════ PLAKĀTA AUDEKLS ═══════
+const PW = 570, PH = 760;          // plakāta loģiskais izmērs (3:4)
+const DPR = 2;                     // asāks attēls lielos ekrānos
 let canvas, ctx, painting = false;
 let tool="pen", color="#111", size=2, font="Syne";
-let history=[], hStep=-1, selectedBox=null;
+let history=[], hStep=-1;
+let activeWidget = null;
 
 function initCanvas() {
   canvas = document.getElementById("posterCanvas");
-  const wrap = document.querySelector("#canvasWrap > div");
-  const w = wrap.offsetWidth || 320;
-  canvas.width = w;
-  canvas.height = Math.round(w * 4/3);
+  canvas.width = PW*DPR; canvas.height = PH*DPR;
   ctx = canvas.getContext("2d");
-  selectedBox = null;
+  ctx.setTransform(DPR,0,0,DPR,0,0);
   history = []; hStep = -1;
-
-  ctx.fillStyle = "#fff";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  // guide dashes
-  ctx.save();
-  ctx.strokeStyle = "rgba(200,200,200,.4)"; ctx.setLineDash([4,6]); ctx.lineWidth = 1;
-  [0.17, 0.82].forEach(y => {
-    ctx.beginPath(); ctx.moveTo(0, canvas.height*y); ctx.lineTo(canvas.width, canvas.height*y); ctx.stroke();
-  });
-  ctx.setLineDash([]); ctx.restore();
-
-  // placeholder labels
-  ctx.save(); ctx.textAlign = "center";
-  ctx.font = "600 "+Math.round(canvas.width*.036)+"px Inter,sans-serif";
-  ctx.fillStyle = "rgba(180,180,180,.55)";
-  ctx.fillText("[ GALVENAIS ATTĒLS ]", canvas.width/2, canvas.height*.5);
-  ctx.font = "700 "+Math.round(canvas.width*.048)+"px Syne,sans-serif";
-  ctx.fillStyle = "rgba(160,160,160,.4)";
-  ctx.fillText("VIRSRAKSTS", canvas.width/2, canvas.height*.1);
-  ctx.font = Math.round(canvas.width*.028)+"px Inter,sans-serif";
-  ctx.fillStyle = "rgba(180,180,180,.4)";
-  ctx.fillText("Zīmols · CTA", canvas.width/2, canvas.height*.91);
-  ctx.restore();
-
+  drawBlank(true);
   saveH();
-
-  // Reset any active text widget
-  if (typeof activeWidget !== "undefined" && activeWidget) {
-    activeWidget.remove(); activeWidget = null;
-  }
-  const twl = document.getElementById("twLayer");
-  if (twl) { twl.innerHTML = ""; twl.style.pointerEvents = "none"; }
-
-  canvas.style.cursor = "crosshair";
   canvas.onmousedown  = onDown;
   canvas.onmousemove  = onMove;
   canvas.onmouseup    = onUp;
@@ -570,31 +522,52 @@ function initCanvas() {
   canvas.ontouchstart = e => { e.preventDefault(); const t=e.touches[0]; onDown({clientX:t.clientX,clientY:t.clientY}); };
   canvas.ontouchmove  = e => { e.preventDefault(); const t=e.touches[0]; onMove({clientX:t.clientX,clientY:t.clientY}); };
   canvas.ontouchend   = onUp;
-
+}
+function drawBlank(guides){
+  ctx.save();
+  ctx.globalCompositeOperation = "source-over";
+  ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, PW, PH);
+  if (guides) {
+    ctx.strokeStyle = "rgba(200,200,200,.45)"; ctx.setLineDash([5,7]); ctx.lineWidth = 1;
+    [0.17, 0.82].forEach(y => { ctx.beginPath(); ctx.moveTo(0, PH*y); ctx.lineTo(PW, PH*y); ctx.stroke(); });
+    ctx.setLineDash([]);
+    ctx.textAlign = "center";
+    ctx.font = "600 "+Math.round(PW*.036)+"px Inter,sans-serif";
+    ctx.fillStyle = "rgba(180,180,180,.6)";
+    ctx.fillText("[ GALVENAIS ATTĒLS ]", PW/2, PH*.5);
+    ctx.font = "700 "+Math.round(PW*.048)+"px Syne,sans-serif";
+    ctx.fillStyle = "rgba(160,160,160,.45)";
+    ctx.fillText("VIRSRAKSTS", PW/2, PH*.1);
+    ctx.font = Math.round(PW*.028)+"px Inter,sans-serif";
+    ctx.fillStyle = "rgba(180,180,180,.5)";
+    ctx.fillText("Zīmols · CTA", PW/2, PH*.91);
+  }
+  ctx.restore();
 }
 
+// klienta koordinātas → plakāta loģiskās koordinātas (der jebkuram mērogam)
 function getPos(e) {
   const r = canvas.getBoundingClientRect();
-  return { x:(e.clientX-r.left)*(canvas.width/r.width), y:(e.clientY-r.top)*(canvas.height/r.height) };
+  return { x:(e.clientX-r.left)*(PW/r.width), y:(e.clientY-r.top)*(PH/r.height) };
 }
-
 function onDown(e) {
   if (tool === "text") { addTextBox(e); return; }
   painting = true;
   const p = getPos(e);
-  ctx.beginPath(); ctx.moveTo(p.x, p.y);
   applyStyle();
+  ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x+0.01, p.y); ctx.stroke();
 }
 function onMove(e) {
   if (!painting) return;
   const p = getPos(e);
   ctx.lineTo(p.x, p.y); ctx.stroke();
 }
-function onUp() { if (painting) { painting=false; saveH(); } }
+function onUp() { if (painting) { painting=false; ctx.globalCompositeOperation="source-over"; saveH(); } }
+window.addEventListener("mouseup", onUp);
 
 function applyStyle() {
   if (tool === "eraser") {
-    ctx.globalCompositeOperation = "destination-out"; ctx.lineWidth = size*5; ctx.strokeStyle = "rgba(0,0,0,1)";
+    ctx.globalCompositeOperation = "source-over"; ctx.lineWidth = size*5; ctx.strokeStyle = "#fff";
   } else if (tool === "marker") {
     ctx.globalCompositeOperation = "source-over"; ctx.lineWidth = size*3; ctx.strokeStyle = color+"99";
   } else {
@@ -613,18 +586,25 @@ function undoCanvas()  { if (hStep<=0) return; hStep--; ctx.putImageData(history
 function clearCanvas() {
   if (activeWidget) { activeWidget.remove(); activeWidget = null; }
   const tl = document.getElementById("twLayer");
-  if (tl) { tl.innerHTML = ""; tl.style.pointerEvents = "none"; }
-  ctx.globalCompositeOperation = "source-over";
-  ctx.fillStyle = "#fff"; ctx.fillRect(0,0,canvas.width,canvas.height);
+  tl.innerHTML = ""; tl.style.pointerEvents = "none";
+  drawBlank(false);
   saveH();
+}
+function savePoster(){
+  if (activeWidget) confirmWidget(activeWidget);
+  const a = document.createElement("a");
+  a.download = "mans-reklamas-plakats.png";
+  a.href = canvas.toDataURL("image/png");
+  document.body.appendChild(a); a.click(); a.remove();
 }
 
 function setTool(t) {
+  if (t !== "text" && activeWidget) confirmWidget(activeWidget);
   tool = t;
   document.querySelectorAll(".tool-btn").forEach(b => b.classList.remove("active"));
   const btn = document.getElementById("tool"+t.charAt(0).toUpperCase()+t.slice(1));
   if (btn) btn.classList.add("active");
-  canvas.style.cursor = t==="eraser"?"cell":t==="text"?"copy":"crosshair";
+  canvas.style.cursor = t==="eraser"?"cell":t==="text"?"text":"crosshair";
 }
 function setColor(el) {
   color = el.dataset.color;
@@ -642,202 +622,176 @@ function setFont(el) {
   el.classList.add("active");
 }
 
-
-
-
-// ═══════ TEXT WIDGET SYSTEM ═══════
-// Each text widget is a DOM div inside #twLayer positioned over the canvas.
-// While active: move (✥), delete (×), rotate (⟳), confirm (✓).
-// On confirm: stamped onto canvas pixels, widget removed. Eraser works on stamp.
-
-let activeWidget = null;
-
-// Get twLayer position — used to convert clientX/Y to layer-relative px
-function twLayerRect() {
-  return document.getElementById("twLayer").getBoundingClientRect();
-}
-
+// ═══════ TEKSTA LOGI ═══════
 function addTextBox(clickEvent) {
-  // Confirm any existing widget first
   if (activeWidget) confirmWidget(activeWidget);
+  const lr = document.getElementById("twLayer").getBoundingClientRect();
+  const x = (clickEvent.clientX - lr.left) / APP_SCALE;
+  const y = (clickEvent.clientY - lr.top)  / APP_SCALE;
+  const fontSize   = Math.max(20, size * 7);
+  const fontFamily = "'" + font + "'" + (font === "Pacifico" ? ",cursive" : ",sans-serif");
 
-  const lr = twLayerRect();
-  const cr = canvas.getBoundingClientRect();
-
-  // Position relative to twLayer
-  const x = clickEvent.clientX - lr.left;
-  const y = clickEvent.clientY - lr.top;
-
-  const fontSize   = Math.max(16, size * 7);
-  const fontFamily = font + (font === "Pacifico" ? ",cursive" : ",sans-serif");
-
-  // ── Widget container ──
   const w = document.createElement("div");
   w.className = "tw active";
-  w.style.cssText = `left:${x}px;top:${y}px;position:absolute;pointer-events:auto;`+
+  w.style.cssText = `left:${x}px;top:${y - fontSize*0.6}px;position:absolute;pointer-events:auto;`+
     `font-family:${fontFamily};font-size:${fontSize}px;color:${color};`+
     `font-weight:bold;line-height:1.2;transform-origin:center center;`;
 
-  // ── Textarea ──
   const ta = document.createElement("textarea");
   ta.rows = 1;
   ta.placeholder = "Ieraksti...";
-  ta.style.cssText = `width:120px;background:transparent;border:none;outline:none;`+
+  ta.style.cssText = `width:140px;background:transparent;border:none;outline:none;`+
     `font-family:inherit;font-size:inherit;font-weight:bold;color:inherit;`+
     `line-height:1.2;resize:none;padding:0;white-space:nowrap;overflow:hidden;`+
     `display:block;cursor:text;pointer-events:auto;`;
+  if (color.toLowerCase()==="#ffffff") ta.style.textShadow = "0 0 2px rgba(0,0,0,.6)";
   ta.addEventListener("input", () => {
-    ta.style.width = Math.max(60, ta.scrollWidth + 4) + "px";
+    ta.style.width = "10px";
+    ta.style.width = Math.max(60, ta.scrollWidth + 6) + "px";
   });
+  ta.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); confirmWidget(w); } });
   ta.addEventListener("mousedown", e => e.stopPropagation());
   ta.addEventListener("touchstart", e => e.stopPropagation(), {passive:true});
 
-  // ── Buttons ──
-  function makeBtn(cls, html_content, onClick) {
+  function makeBtn(cls, txt, onClick) {
     const b = document.createElement("div");
     b.className = "tw-btn " + cls;
-    b.innerHTML = html_content;
+    b.textContent = txt;
     b.addEventListener("mousedown", e => { e.stopPropagation(); e.preventDefault(); onClick(); });
     b.addEventListener("touchstart", e => { e.stopPropagation(); e.preventDefault(); onClick(); }, {passive:false});
     return b;
   }
+  const btnDel  = makeBtn("tw-del",  "✕", () => { w.remove(); activeWidget = null; document.getElementById("twLayer").style.pointerEvents = "none"; });
+  const btnOk   = makeBtn("tw-ok",   "✓", () => confirmWidget(w));
+  const btnMove = makeBtn("tw-move", "✥", () => {});
+  const btnRot  = makeBtn("tw-rot",  "↻", () => {});
+  w.append(ta, btnDel, btnOk, btnMove, btnRot);
 
-  const btnDel  = makeBtn("tw-btn tw-del",  "✕", () => { w.remove(); activeWidget = null; });
-  const btnOk   = makeBtn("tw-btn tw-ok",   "✓", () => confirmWidget(w));
-  const btnMove = makeBtn("tw-btn tw-move", "✥", () => {});
-  const btnRot  = makeBtn("tw-btn tw-rot",  "↻", () => {});
+  w._angle = 0; w._font = fontFamily; w._size = fontSize; w._color = color;
 
-  w.appendChild(ta);
-  w.appendChild(btnDel);
-  w.appendChild(btnOk);
-  w.appendChild(btnMove);
-  w.appendChild(btnRot);
-
-  // Store state on widget
-  w._angle = 0;
-  w._font  = fontFamily;
-  w._size  = fontSize;
-  w._color = color;
-
-  document.getElementById("twLayer").style.pointerEvents = "auto";
-  document.getElementById("twLayer").appendChild(w);
+  const layer = document.getElementById("twLayer");
+  layer.style.pointerEvents = "none";   // slānis pats netraucē zīmēt; logs ir pointer-events:auto
+  layer.appendChild(w);
   activeWidget = w;
-
   attachMove(w, btnMove);
   attachRotate(w, btnRot);
-
   setTimeout(() => ta.focus(), 10);
 }
 
 function confirmWidget(w) {
   const ta   = w.querySelector("textarea");
-  const text = ta ? ta.value.trim() : w._text || "";
-  if (!text) { w.remove(); activeWidget = null; return; }
-
-  // Get widget bounding rect relative to canvas display area
+  const text = ta ? ta.value.trim() : "";
+  if (!text) { w.remove(); if (activeWidget===w) activeWidget = null; return; }
   const cr = canvas.getBoundingClientRect();
-  const wr = w.getBoundingClientRect();
-
-  // Scale factor: canvas pixels per CSS pixel
-  const scaleX = canvas.width  / cr.width;
-  const scaleY = canvas.height / cr.height;
-
-  // Center of widget in canvas pixels
-  const cx = (wr.left + wr.width  / 2 - cr.left) * scaleX;
-  const cy = (wr.top  + wr.height / 2 - cr.top)  * scaleY;
-
-  ctx.save();
-  ctx.globalCompositeOperation = "source-over";
-  ctx.font      = `bold ${w._size}px ${w._font}`;
-  ctx.fillStyle = w._color;
-  ctx.textAlign    = "center";
-  ctx.textBaseline = "middle";
-  ctx.translate(cx, cy);
-  ctx.rotate(w._angle);
-  ctx.fillText(text, 0, 0);
-  ctx.restore();
-
-  saveH();
+  const wr = ta.getBoundingClientRect();
+  // centrs plakāta loģiskajās koordinātās
+  const cx = (wr.left + wr.width/2  - cr.left) * (PW / cr.width);
+  const cy = (wr.top  + wr.height/2 - cr.top)  * (PH / cr.height);
+  const fontStr = `bold ${w._size}px ${w._font}`, col = w._color, ang = w._angle;
+  const draw = () => {
+    ctx.save();
+    ctx.globalCompositeOperation = "source-over";
+    ctx.font = fontStr; ctx.fillStyle = col;
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.translate(cx, cy); ctx.rotate(ang);
+    ctx.fillText(text, 0, 0);
+    ctx.restore();
+    saveH();
+  };
+  // pārliecinās, ka šrifts (arī garumzīmes) ir ielādēts, pirms zīmē uz audekla
+  if (document.fonts && document.fonts.load) document.fonts.load(fontStr, text).then(draw, draw); else draw();
   w.remove();
-  activeWidget = null;
-  document.getElementById("twLayer").style.pointerEvents = "none";
+  if (activeWidget===w) activeWidget = null;
 }
 
-// ── Move: drag from btnMove ──
 function attachMove(w, btn) {
   function startDrag(clientX, clientY) {
-    const startL = parseInt(w.style.left) || 0;
-    const startT = parseInt(w.style.top)  || 0;
+    const startL = parseFloat(w.style.left) || 0;
+    const startT = parseFloat(w.style.top)  || 0;
     const sx = clientX, sy = clientY;
-
-    function onMove(e) {
-      const cx = e.clientX || e.touches[0].clientX;
-      const cy = e.clientY || e.touches[0].clientY;
-      w.style.left = (startL + cx - sx) + "px";
-      w.style.top  = (startT + cy - sy) + "px";
+    function mv(e) {
+      const p = e.touches ? e.touches[0] : e;
+      w.style.left = (startL + (p.clientX - sx) / APP_SCALE) + "px";
+      w.style.top  = (startT + (p.clientY - sy) / APP_SCALE) + "px";
+      if (e.cancelable) e.preventDefault();
     }
-    function onUp() {
-      document.removeEventListener("mousemove", onMove, true);
-      document.removeEventListener("mouseup",   onUp,   true);
-      document.removeEventListener("touchmove", onMove, true);
-      document.removeEventListener("touchend",  onUp,   true);
+    function up() {
+      document.removeEventListener("mousemove", mv, true);
+      document.removeEventListener("mouseup",   up, true);
+      document.removeEventListener("touchmove", mv, true);
+      document.removeEventListener("touchend",  up, true);
     }
-    document.addEventListener("mousemove", onMove, true);
-    document.addEventListener("mouseup",   onUp,   true);
-    document.addEventListener("touchmove", onMove, {capture:true, passive:false});
-    document.addEventListener("touchend",  onUp,   true);
+    document.addEventListener("mousemove", mv, true);
+    document.addEventListener("mouseup",   up, true);
+    document.addEventListener("touchmove", mv, {capture:true, passive:false});
+    document.addEventListener("touchend",  up, true);
   }
-
-  btn.addEventListener("mousedown", e => {
-    e.preventDefault(); e.stopPropagation();
-    startDrag(e.clientX, e.clientY);
-  });
-  btn.addEventListener("touchstart", e => {
-    e.preventDefault(); e.stopPropagation();
-    startDrag(e.touches[0].clientX, e.touches[0].clientY);
-  }, {passive:false});
+  btn.addEventListener("mousedown", e => { e.preventDefault(); e.stopPropagation(); startDrag(e.clientX, e.clientY); });
+  btn.addEventListener("touchstart", e => { e.preventDefault(); e.stopPropagation(); startDrag(e.touches[0].clientX, e.touches[0].clientY); }, {passive:false});
 }
 
-// ── Rotate: drag from btnRot ──
 function attachRotate(w, btn) {
   function startRotate(clientX, clientY) {
     const wr = w.getBoundingClientRect();
-    const cx = wr.left + wr.width  / 2;
-    const cy = wr.top  + wr.height / 2;
+    const cx = wr.left + wr.width / 2, cy = wr.top + wr.height / 2;
     const startAngle = Math.atan2(clientY - cy, clientX - cx) - w._angle;
-
-    function onMove(e) {
-      const mx = e.clientX || e.touches[0].clientX;
-      const my = e.clientY || e.touches[0].clientY;
-      const wr2 = w.getBoundingClientRect();
-      const cx2 = wr2.left + wr2.width  / 2;
-      const cy2 = wr2.top  + wr2.height / 2;
-      w._angle = Math.atan2(my - cy2, mx - cx2) - startAngle;
+    function mv(e) {
+      const p = e.touches ? e.touches[0] : e;
+      w._angle = Math.atan2(p.clientY - cy, p.clientX - cx) - startAngle;
       w.style.transform = `rotate(${w._angle}rad)`;
+      if (e.cancelable) e.preventDefault();
     }
-    function onUp() {
-      document.removeEventListener("mousemove", onMove, true);
-      document.removeEventListener("mouseup",   onUp,   true);
-      document.removeEventListener("touchmove", onMove, true);
-      document.removeEventListener("touchend",  onUp,   true);
+    function up() {
+      document.removeEventListener("mousemove", mv, true);
+      document.removeEventListener("mouseup",   up, true);
+      document.removeEventListener("touchmove", mv, true);
+      document.removeEventListener("touchend",  up, true);
     }
-    document.addEventListener("mousemove", onMove, true);
-    document.addEventListener("mouseup",   onUp,   true);
-    document.addEventListener("touchmove", onMove, {capture:true, passive:false});
-    document.addEventListener("touchend",  onUp,   true);
+    document.addEventListener("mousemove", mv, true);
+    document.addEventListener("mouseup",   up, true);
+    document.addEventListener("touchmove", mv, {capture:true, passive:false});
+    document.addEventListener("touchend",  up, true);
   }
-
-  btn.addEventListener("mousedown", e => {
-    e.preventDefault(); e.stopPropagation();
-    startRotate(e.clientX, e.clientY);
-  });
-  btn.addEventListener("touchstart", e => {
-    e.preventDefault(); e.stopPropagation();
-    startRotate(e.touches[0].clientX, e.touches[0].clientY);
-  }, {passive:false});
+  btn.addEventListener("mousedown", e => { e.preventDefault(); e.stopPropagation(); startRotate(e.clientX, e.clientY); });
+  btn.addEventListener("touchstart", e => { e.preventDefault(); e.stopPropagation(); startRotate(e.touches[0].clientX, e.touches[0].clientY); }, {passive:false});
 }
 
+// ═══════ 16:9 MĒROGOŠANA UN PILNEKRĀNS ═══════
+const appEl = document.getElementById('app');
+let APP_SCALE = 1;
+function fitApp(){
+  const W = window.innerWidth, H = window.innerHeight;
+  APP_SCALE = Math.min(W/1600, H/900);
+  appEl.style.transform = `scale(${APP_SCALE})`;
+  appEl.style.left = Math.max(0,(W-1600*APP_SCALE)/2)+'px';
+  appEl.style.top  = Math.max(0,(H-900*APP_SCALE)/2)+'px';
+}
+window.addEventListener('resize', fitApp);
+fitApp();
+const fsBtn = document.getElementById('fsBtn');
+function isFullscreen(){ return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+function fsFallback(){
+  if (confirm('Pilnekrāna režīms šajā logā nav pieejams. Atvērt rīku jaunā cilnē?')) window.open(location.href, '_blank');
+}
+function toggleFullscreen(){
+  const el = document.documentElement;
+  try {
+    if (isFullscreen()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    else if (el.requestFullscreen) el.requestFullscreen().catch(fsFallback);
+    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    else fsFallback();
+  } catch(err){ fsFallback(); }
+}
+function updateFsBtn(){
+  fsBtn.textContent = isFullscreen() ? '✕ Iziet no pilnekrāna' : '⛶ Atvērt pilnekrānu';
+  setTimeout(fitApp, 60);
+}
+fsBtn.addEventListener('click', toggleFullscreen);
+document.addEventListener('fullscreenchange', updateFsBtn);
+document.addEventListener('webkitfullscreenchange', updateFsBtn);
 
+initCanvas();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(()=>{ if (hStep===0){ history=[]; hStep=-1; drawBlank(true); saveH(); } });
 </script>
 </body>
 </html>
